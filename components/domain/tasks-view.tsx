@@ -13,8 +13,8 @@ import {
   defaultTaskFilters,
   type TaskFiltersState,
 } from "@/components/domain/task-filters";
+import { TaskAgenda } from "@/components/domain/task-agenda";
 import { TaskModal } from "@/components/domain/task-modal";
-import { TaskRow } from "@/components/domain/task-row";
 import { useDemo } from "@/lib/demo-store";
 import { useI18n } from "@/lib/i18n";
 import { isDueToday, isOverdue, openTasks } from "@/lib/selectors";
@@ -145,14 +145,13 @@ export function TasksView() {
           }
         />
       ) : view === "list" ? (
-        <div className="space-y-2">
-          {filtered.map((task) => (
-            <TaskRow key={task.id} task={task} onOpen={(item) => {
-              setEditingTask(item);
-              setModalOpen(true);
-            }} />
-          ))}
-        </div>
+        <TaskAgenda
+          tasks={filtered}
+          onOpen={(item) => {
+            setEditingTask(item);
+            setModalOpen(true);
+          }}
+        />
       ) : (
         <TaskBoard
           tasks={filtered}

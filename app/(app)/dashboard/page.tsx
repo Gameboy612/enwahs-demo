@@ -13,12 +13,10 @@ import {
   TriangleAlert,
   type LucideIcon,
 } from "lucide-react";
-import { AssigneeStack } from "@/components/domain/assignee-stack";
-import { TaskStateMenu } from "@/components/domain/task-state-menu";
 import { Button } from "@/components/ui/button";
-import { CompanyMark } from "@/components/ui/company-mark";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Input } from "@/components/ui/input";
+import { TaskAgenda } from "@/components/domain/task-agenda";
 import { TaskModal } from "@/components/domain/task-modal";
 import { DEMO_TODAY } from "@/lib/constants";
 import { useDemo } from "@/lib/demo-store";
@@ -28,11 +26,9 @@ import type { Task } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 type HomeFilter = "all" | "todo" | "doing" | "done" | "urgent" | "blocked";
-type GroupKey = "overdue" | "today" | "tomorrow" | "week" | "later" | "done";
-
 export default function HomePage() {
   const { data } = useDemo();
-  const { t, pick, formatDate, daysFromToday } = useI18n();
+  const { t, pick, formatDate } = useI18n();
   const [filter, setFilter] = useState<HomeFilter>("all");
   const [search, setSearch] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
@@ -103,34 +99,6 @@ export default function HomePage() {
       })
       .sort((a, b) => a.due.localeCompare(b.due));
   }, [data.companies, data.team, data.tasks, filter, pick, search]);
-
-  const groups = useMemo(() => {
-    const bucketFor = (task: Task): GroupKey => {
-      if (task.status === "done") return "done";
-      const diff = daysFromToday(task.due);
-      if (diff < 0) return "overdue";
-      if (diff === 0) return "today";
-      if (diff === 1) return "tomorrow";
-      if (diff <= 7) return "week";
-      return "later";
-    };
-    const labels: Record<GroupKey, string> = {
-      overdue: t("common.overdue"),
-      today: t("common.today"),
-      tomorrow: t("common.tomorrow"),
-      week: t("dashboard.thisWeek"),
-      later: t("home.later"),
-      done: t("status.done"),
-    };
-    const order: GroupKey[] = ["overdue", "today", "tomorrow", "week", "later", "done"];
-    return order
-      .map((key) => ({
-        key,
-        label: labels[key],
-        tasks: tasks.filter((task) => bucketFor(task) === key),
-      }))
-      .filter((group) => group.tasks.length > 0);
-  }, [daysFromToday, t, tasks]);
 
   const openTask = (task: Task) => {
     setEditingTask(task);
@@ -226,7 +194,7 @@ export default function HomePage() {
         />
       </div>
 
-      {groups.length === 0 ? (
+      {tasks.length === 0 ? (
         <EmptyState
           icon={<CheckSquare className="h-5 w-5" />}
           title={t("tasks.empty")}
@@ -237,99 +205,7 @@ export default function HomePage() {
           }
         />
       ) : (
-        <div className="space-y-4">
-          {groups.map((group) => (
-            <section key={group.key}>
-              <div className="mb-1.5 flex items-center justify-between px-1">
-                <h2 className="text-[9px] font-medium uppercase tracking-[0.12em] text-slate-400">
-                  {group.label}
-                </h2>
-                <span className="text-[9px] text-slate-400">{group.tasks.length}</span>
-              </div>
-              <div className="surface-card divide-y divide-line/60 overflow-hidden">
-                {group.tasks.map((task) => {
-                  const company = data.companies.find((item) => item.id === task.companyId);
-                  const assignees = data.team.filter((item) =>
-                    task.assigneeIds.includes(item.id),
-                  );
-                  const done = task.status === "done";
-                  const overdue = isOverdue(task);
-                  return (
-                    <div
-                      key={task.id}
-                      role="button"
-                      tabIndex={0}
-                      onClick={() => openTask(task)}
-                      onKeyDown={(event) => {
-                        if (event.key === "Enter" || event.key === " ") {
-                          event.preventDefault();
-                          openTask(task);
-                        }
-                      }}
-                      className={cn(
-                        "flex cursor-pointer items-center gap-3 px-3.5 py-3 transition hover:bg-slate-50/60",
-                        done && "opacity-60",
-                      )}
-                    >
-                      <TaskStateMenu task={task} />
-
-                      <span
-                        className={cn(
-                          "flex h-10 w-14 shrink-0 flex-col items-center justify-center rounded-lg text-[8px] font-medium leading-tight",
-                          done
-                            ? "bg-slate-50 text-slate-400"
-                            : overdue
-                              ? "bg-red-50 text-red-600"
-                              : "bg-slate-50 text-slate-500",
-                        )}
-                      >
-                        {formatDate(task.due, "short")}
-                      </span>
-
-                      <span
-                        className={cn(
-                          "h-1.5 w-1.5 shrink-0 rounded-full",
-                          task.priority === "high"
-                            ? "bg-red-500"
-                            : task.priority === "medium"
-                              ? "bg-gold-500"
-                              : "bg-slate-300",
-                        )}
-                        title={t(`common.${task.priority}`)}
-                      />
-
-                      <span className="min-w-0 flex-1">
-                        <span className="flex items-center gap-1.5">
-                          <span
-                            className={cn(
-                              "truncate text-[12px] font-medium text-ink",
-                              done && "text-slate-400 line-through",
-                            )}
-                          >
-                            {pick(task.title)}
-                          </span>
-                          {task.blocked && (
-                            <Pause className="h-2.5 w-2.5 shrink-0 text-amber-500" aria-label={t("tasks.blocked")} />
-                          )}
-                        </span>
-                        <span className="mt-0.5 flex items-center gap-1.5 text-[9px] text-slate-400">
-                          {company && (
-                            <>
-                              <CompanyMark company={company} size="xs" className="h-3.5 w-3.5 rounded-[4px] text-[6px]" />
-                              <span className="truncate">{pick(company.shortName)}</span>
-                            </>
-                          )}
-                        </span>
-                      </span>
-
-                      <AssigneeStack members={assignees} />
-                    </div>
-                  );
-                })}
-              </div>
-            </section>
-          ))}
-        </div>
+        <TaskAgenda tasks={tasks} onOpen={openTask} />
       )}
 
       <TaskModal

@@ -7,12 +7,15 @@ import {
   ChevronDown,
   Circle,
   CircleCheck,
+  Eye,
+  Flag,
   LoaderCircle,
   MessageSquare,
   Plus,
   ScrollText,
   Search,
   Trash2,
+  Users,
   X,
 } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
@@ -268,6 +271,26 @@ export function TaskModal({
     { value: "email", label: t("channel.email") },
     { value: "internal", label: t("channel.internal") },
   ];
+  const roleChoices = [
+    {
+      value: "lead" as AssigneeRole,
+      label: t("assigneeRole.lead"),
+      icon: Flag,
+      active: "bg-amber-50 text-amber-600",
+    },
+    {
+      value: "reviewer" as AssigneeRole,
+      label: t("assigneeRole.reviewer"),
+      icon: Eye,
+      active: "bg-brand-50 text-brand-600",
+    },
+    {
+      value: "support" as AssigneeRole,
+      label: t("assigneeRole.support"),
+      icon: Users,
+      active: "bg-teal-50 text-teal-600",
+    },
+  ];
 
   return (
     <>
@@ -416,23 +439,44 @@ export function TaskModal({
                           {pick(member.title)}
                         </span>
                       </span>
-                      <select
+                      <div
+                        className="flex shrink-0 items-center gap-0.5 rounded-lg border border-line bg-white p-0.5"
+                        role="radiogroup"
                         aria-label={`${t("editor.role")} ${pick(member.name)}`}
-                        value={form.assigneeRoles[member.id] ?? (index === 0 ? "lead" : "support")}
-                        onChange={(event) =>
-                          update({
-                            assigneeRoles: {
-                              ...form.assigneeRoles,
-                              [member.id]: event.target.value as AssigneeRole,
-                            },
-                          })
-                        }
-                        className="h-7 shrink-0 rounded-lg border border-line bg-white px-1.5 text-[9px] font-medium text-slate-600 outline-none focus:border-brand-300"
                       >
-                        <option value="lead">{t("assigneeRole.lead")}</option>
-                        <option value="reviewer">{t("assigneeRole.reviewer")}</option>
-                        <option value="support">{t("assigneeRole.support")}</option>
-                      </select>
+                        {roleChoices.map((choice) => {
+                          const currentRole =
+                            form.assigneeRoles[member.id] ?? (index === 0 ? "lead" : "support");
+                          const selected = currentRole === choice.value;
+                          const RoleIcon = choice.icon;
+                          return (
+                            <button
+                              key={choice.value}
+                              type="button"
+                              role="radio"
+                              aria-checked={selected}
+                              aria-label={choice.label}
+                              title={choice.label}
+                              onClick={() =>
+                                update({
+                                  assigneeRoles: {
+                                    ...form.assigneeRoles,
+                                    [member.id]: choice.value,
+                                  },
+                                })
+                              }
+                              className={cn(
+                                "flex h-6 w-6 items-center justify-center rounded-md transition",
+                                selected
+                                  ? choice.active
+                                  : "text-slate-300 hover:text-slate-500",
+                              )}
+                            >
+                              <RoleIcon className="h-3 w-3" aria-hidden="true" />
+                            </button>
+                          );
+                        })}
+                      </div>
                       <button
                         type="button"
                         onClick={() => removeAssignee(member.id)}
