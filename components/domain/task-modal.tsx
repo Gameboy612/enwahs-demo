@@ -353,11 +353,33 @@ export function TaskModal({
                 )}
               />
               {errors.title && <p className="mt-1 text-[10px] text-red-600">{errors.title}</p>}
-              <p className="mt-1 truncate text-[9px] text-slate-400">
-                {company
-                  ? `${pick(company.name)} · ${pick(company.industry)}`
-                  : t("tasks.selectCompany")}
-              </p>
+              <div className="mt-1 flex min-w-0 items-center gap-1.5">
+                {company ? (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => setCompanyPickerOpen(true)}
+                      aria-haspopup="dialog"
+                      className="inline-flex min-w-0 items-center gap-1 text-[13px] font-medium text-slate-600 transition hover:text-brand-700"
+                    >
+                      <span className="truncate">{pick(company.name)}</span>
+                      <ChevronDown className="h-3 w-3 shrink-0 text-slate-400" aria-hidden="true" />
+                    </button>
+                    <span className="shrink-0 text-[9px] text-slate-400">
+                      · {pick(company.industry)}
+                    </span>
+                  </>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setCompanyPickerOpen(true)}
+                    aria-haspopup="dialog"
+                    className="text-[13px] font-medium text-brand-600 hover:text-brand-800"
+                  >
+                    {t("tasks.selectCompany")}
+                  </button>
+                )}
+              </div>
               {errors.company && <p className="mt-1 text-[10px] text-red-600">{errors.company}</p>}
             </div>
           </div>

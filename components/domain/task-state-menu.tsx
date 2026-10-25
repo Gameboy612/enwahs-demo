@@ -22,7 +22,13 @@ const statusIcons = {
   done: CircleCheck,
 };
 
-export function TaskStateMenu({ task }: { task: Task }) {
+export function TaskStateMenu({
+  task,
+  variant = "icon",
+}: {
+  task: Task;
+  variant?: "icon" | "dropdown";
+}) {
   const { setTaskStatus, updateTask } = useDemo();
   const { t } = useI18n();
   const [open, setOpen] = useState(false);
@@ -35,9 +41,11 @@ export function TaskStateMenu({ task }: { task: Task }) {
     const place = () => {
       const rect = buttonRef.current?.getBoundingClientRect();
       if (!rect) return;
+      const menuWidth = 176;
+      const preferredLeft = variant === "dropdown" ? rect.right - menuWidth : rect.left;
       setPosition({
         top: Math.min(rect.bottom + 6, window.innerHeight - 220),
-        left: Math.max(8, Math.min(rect.left, window.innerWidth - 184)),
+        left: Math.max(8, Math.min(preferredLeft, window.innerWidth - menuWidth - 8)),
       });
     };
     place();
@@ -59,13 +67,32 @@ export function TaskStateMenu({ task }: { task: Task }) {
       window.removeEventListener("scroll", place, true);
       window.removeEventListener("resize", place);
     };
-  }, [open]);
+  }, [open, variant]);
 
   const Icon = statusIcons[task.status];
   const chooseStatus = (status: TaskStatus) => {
     setTaskStatus(task.id, status);
     setOpen(false);
   };
+
+  const triggerClassName =
+    variant === "dropdown"
+      ? cn(
+          "flex h-7 shrink-0 items-center justify-center gap-1 rounded-lg border px-1.5 text-[9px] font-medium transition sm:h-8 sm:w-[88px] sm:justify-between sm:gap-1.5 sm:px-2 sm:text-[10px]",
+          task.status === "done"
+            ? "border-teal-200 bg-teal-50 text-teal-600 hover:border-teal-300"
+            : task.status === "doing"
+              ? "border-brand-200 bg-brand-50 text-brand-600 hover:border-brand-300"
+              : "border-line bg-white text-slate-500 hover:border-brand-300 hover:text-ink",
+        )
+      : cn(
+          "flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition",
+          task.status === "done"
+            ? "border-teal-500 bg-teal-500 text-white"
+            : task.status === "doing"
+              ? "border-brand-300 bg-brand-50 text-brand-600"
+              : "border-slate-300 bg-white text-slate-400 hover:border-brand-300",
+        );
 
   return (
     <>
@@ -78,18 +105,17 @@ export function TaskStateMenu({ task }: { task: Task }) {
         }}
         aria-haspopup="menu"
         aria-expanded={open}
-        aria-label={t("tasks.statusLabel")}
+        aria-label={`${t("tasks.statusLabel")}: ${t(`status.${task.status}`)}`}
         title={t("tasks.statusLabel")}
-        className={cn(
-          "flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition",
-          task.status === "done"
-            ? "border-teal-500 bg-teal-500 text-white"
-            : task.status === "doing"
-              ? "border-brand-300 bg-brand-50 text-brand-600"
-              : "border-slate-300 bg-white text-slate-400 hover:border-brand-300",
-        )}
+        className={triggerClassName}
       >
-        <Icon className="h-2.5 w-2.5" aria-hidden="true" />
+        <Icon className={cn(variant === "dropdown" ? "h-3 w-3 shrink-0" : "h-2.5 w-2.5")} aria-hidden="true" />
+        {variant === "dropdown" && (
+          <>
+            <span className="hidden truncate sm:inline">{t(`status.${task.status}`)}</span>
+            <ChevronDown className="h-2.5 w-2.5 shrink-0 opacity-60" aria-hidden="true" />
+          </>
+        )}
       </button>
 
       {open &&
