@@ -24,7 +24,7 @@ client data is fictional.
 |---|---|
 | **Login** (`/`) | One-click demo entry; preview as Partner, CS Team Lead or CS Assistant; EN / 繁中 / 简中 |
 | **Home** (`/dashboard/`) | Todo agenda with icon filters, count cards, inline state dropdowns, date groups and search |
-| **Tasks** (`/tasks/`) | Date-grouped agenda and kanban board, filters, quick views, create/edit/delete, multiple assignees with icon roles, checklist progress, drag between columns |
+| **Tasks** (`/tasks/`) | Board-first task screen with a date-grouped List view, filters, quick views, create/edit/delete, multiple assignees with icon roles, checklist progress, drag between columns |
 | **Companies** (`/companies/`) | Card and table views, search/filter, add company, health and risk |
 | **Company profile** (`/companies/detail/?id=…`) | Contacts, services, open/completed tasks, notes, edit company |
 | **Inbox** (`/inbox/`) | Simulated WhatsApp/WeChat threads, AI summary, extracted tasks, one-click task creation, read-only composer |

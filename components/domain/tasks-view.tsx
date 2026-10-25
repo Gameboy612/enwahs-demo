@@ -28,7 +28,7 @@ export function TasksView() {
   const { data } = useDemo();
   const { t, pick } = useI18n();
   const [filters, setFilters] = useState<TaskFiltersState>(defaultTaskFilters);
-  const [view, setView] = useState<ViewMode>("list");
+  const [view, setView] = useState<ViewMode>("board");
   const [modalOpen, setModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [initialStatus, setInitialStatus] = useState<TaskStatus>("todo");
