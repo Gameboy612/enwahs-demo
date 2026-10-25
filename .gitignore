@@ -37,3 +37,6 @@ coverage/
 .idea/
 .vscode/*
 !.vscode/extensions.json
+
+# local agent verification artifacts
+.dsh/tmp/
