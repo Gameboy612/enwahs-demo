@@ -94,6 +94,7 @@ export type Task = {
   tags: Localized[];
   checklist: ChecklistItem[];
   sourceThreadId?: string;
+  blocked?: boolean;
 };
 
 export type MessageKind = "text" | "image" | "voice" | "file" | "note";

@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarDays, CheckSquare, MessageSquare } from "lucide-react";
+import { CalendarDays, CheckSquare, Lock, MessageSquare } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { CompanyMark } from "@/components/ui/company-mark";
 import { ChannelIcon } from "@/components/ui/channel-icon";
@@ -106,6 +106,9 @@ export function TaskRow({
             </span>
           )}
           {task.sourceThreadId && <MessageSquare className="h-2.5 w-2.5" aria-hidden="true" />}
+          {task.blocked && (
+            <Lock className="h-2.5 w-2.5 text-amber-500" aria-label={t("tasks.blocked")} />
+          )}
         </span>
       </span>
 

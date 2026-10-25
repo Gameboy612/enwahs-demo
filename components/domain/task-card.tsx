@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarDays, CheckSquare } from "lucide-react";
+import { CalendarDays, CheckSquare, Lock } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { CompanyMark } from "@/components/ui/company-mark";
 import { ChannelIcon } from "@/components/ui/channel-icon";
@@ -53,17 +53,20 @@ export function TaskCard({
       )}
     >
       <div className="flex items-center justify-between gap-2">
-        <span
-          className={cn(
-            "h-1.5 w-1.5 rounded-full",
+        <span className="flex items-center gap-1.5">
+          {task.blocked && <Lock className="h-2.5 w-2.5 text-amber-500" aria-label={t("tasks.blocked")} />}
+          <span
+            className={cn(
+              "h-1.5 w-1.5 rounded-full",
             task.priority === "high"
               ? "bg-red-500"
               : task.priority === "medium"
                 ? "bg-gold-500"
                 : "bg-slate-300",
-          )}
-          title={t(`common.${task.priority}`)}
-        />
+            )}
+            title={t(`common.${task.priority}`)}
+          />
+        </span>
         <span
           className={cn(
             "inline-flex items-center gap-1 text-[9px]",

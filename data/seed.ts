@@ -773,6 +773,7 @@ export const tasks: Task[] = [
       { id: "c11", label: L("Follow-up list", "跟進清單", "跟进清单"), done: false },
     ],
     sourceThreadId: "th-peak",
+    blocked: true,
   },
   {
     id: "t5",
@@ -1017,6 +1018,7 @@ export const tasks: Task[] = [
       { id: "c25", label: L("Reply to client", "回覆客戶", "回复客户"), done: false },
     ],
     sourceThreadId: "th-golden",
+    blocked: true,
   },
   {
     id: "t15",

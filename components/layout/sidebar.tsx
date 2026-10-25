@@ -6,7 +6,7 @@ import {
   BarChart3,
   Building2,
   CheckSquare,
-  LayoutDashboard,
+  ListTodo,
   LogOut,
   MessageSquare,
   Settings,
@@ -31,7 +31,7 @@ type NavItem = {
     | "nav.reports"
     | "nav.team"
     | "nav.settings";
-  icon: typeof LayoutDashboard;
+  icon: typeof ListTodo;
   badge?: number;
 };
 
@@ -52,7 +52,7 @@ export function Sidebar({
   const unread = unreadCount(data.threads);
 
   const items: NavItem[] = [
-    { href: "/dashboard/", key: "nav.dashboard", icon: LayoutDashboard },
+    { href: "/dashboard/", key: "nav.dashboard", icon: ListTodo },
     { href: "/tasks/", key: "nav.tasks", icon: CheckSquare, badge: openTasks(data.tasks).length },
     { href: "/companies/", key: "nav.companies", icon: Building2 },
     { href: "/inbox/", key: "nav.inbox", icon: MessageSquare, badge: unread },

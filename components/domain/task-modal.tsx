@@ -22,6 +22,7 @@ type FormState = {
   priority: TaskPriority;
   due: string;
   channel: Channel;
+  blocked: boolean;
 };
 
 const toLocalized = (value: string): Localized => ({
@@ -56,6 +57,7 @@ export function TaskModal({
     priority: "medium",
     due: DEMO_TODAY,
     channel: "internal",
+    blocked: false,
   }));
   const [errors, setErrors] = useState<{ title?: string; company?: string }>({});
   const [confirmingDelete, setConfirmingDelete] = useState(false);
@@ -74,6 +76,7 @@ export function TaskModal({
         priority: task.priority,
         due: task.due,
         channel: task.channel,
+        blocked: task.blocked ?? false,
       });
     } else {
       setForm({
@@ -85,6 +88,7 @@ export function TaskModal({
         priority: "medium",
         due: DEMO_TODAY,
         channel: "internal",
+        blocked: false,
       });
     }
     // Only re-initialise when the modal opens or the edited task changes.
@@ -116,6 +120,7 @@ export function TaskModal({
         priority: form.priority,
         due: form.due,
         channel: form.channel,
+        blocked: form.blocked,
       });
       toast(t("toast.taskUpdated"));
     } else {
@@ -128,6 +133,7 @@ export function TaskModal({
         priority: form.priority,
         due: form.due,
         channel: form.channel,
+        blocked: form.blocked,
       });
       toast(t("toast.taskCreated"));
     }
@@ -265,6 +271,15 @@ export function TaskModal({
           onChange={(event) => update({ channel: event.target.value as Channel })}
           options={channelOptions}
         />
+        <label className="flex w-fit items-center gap-2 text-[11px] font-medium text-slate-600">
+          <input
+            type="checkbox"
+            checked={form.blocked}
+            onChange={(event) => update({ blocked: event.target.checked })}
+            className="h-3.5 w-3.5 rounded border-line accent-brand-600"
+          />
+          {t("tasks.blocked")}
+        </label>
 
         {task?.sourceThreadId && (
           <div className="flex items-center justify-between gap-3 rounded-xl border border-line bg-slate-50 px-3.5 py-3">

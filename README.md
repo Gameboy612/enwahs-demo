@@ -12,12 +12,14 @@ client data is fictional.
 
 ![Login](docs/screenshots/login.webp)
 
+![Home todo list](docs/screenshots/home.webp)
+
 ## What is inside
 
 | Area | What you can do |
 |---|---|
 | **Login** (`/`) | One-click demo entry; preview as Partner, CS Team Lead or CS Assistant; EN / 繁中 / 简中 |
-| **Dashboard** (`/dashboard/`) | KPIs, AI daily brief, priority tasks, deadlines and recent conversations |
+| **Home** (`/dashboard/`) | Todo list with All / Todo / Doing / Done / Urgent / Blocked tabs, counts and search |
 | **Tasks** (`/tasks/`) | List and kanban board, filters, quick views, create/edit/delete, checklist progress, drag between columns |
 | **Companies** (`/companies/`) | Card and table views, search/filter, add company, health and risk |
 | **Company profile** (`/companies/detail/?id=…`) | Contacts, services, open/completed tasks, notes, edit company |

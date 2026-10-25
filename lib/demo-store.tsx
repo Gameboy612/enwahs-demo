@@ -47,6 +47,7 @@ export type TaskDraft = {
   tags?: Localized[];
   checklist?: { id: string; label: Localized; done: boolean }[];
   sourceThreadId?: string;
+  blocked?: boolean;
 };
 
 export type CompanyDraft = {
@@ -166,6 +167,7 @@ export function DemoProvider({ children }: { children: ReactNode }) {
       tags: draft.tags ?? [],
       checklist: (draft.checklist ?? []).map((item) => ({ ...item, id: makeId("check") })),
       sourceThreadId: draft.sourceThreadId,
+      blocked: draft.blocked ?? false,
     };
     setData((current) => ({ ...current, tasks: [task, ...current.tasks] }));
     return task;

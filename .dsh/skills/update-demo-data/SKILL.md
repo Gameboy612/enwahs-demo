@@ -110,7 +110,7 @@ on Linux. Do not commit `.next/` or `out/`.
 ## Visual QA checklist
 
 - Login at `/` with each preview role; the language switch persists.
-- Dashboard KPI counts, priority queue and dates make sense.
+- Home todo list: tabs, Todo/Doing/Done counts, search, urgent and blocked filters.
 - Tasks: list, board, create/edit, mark done, kanban drag, filters.
 - Companies: grid/table, add company, open a profile, add a note, create a task.
 - Inbox: switch WhatsApp/WeChat threads, read AI summary, create an extracted

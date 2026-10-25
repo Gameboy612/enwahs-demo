@@ -12,7 +12,7 @@ import { useI18n, type TranslationKey } from "@/lib/i18n";
 import { NotificationsMenu } from "@/components/layout/notifications-menu";
 
 const pageKeys: Record<string, TranslationKey> = {
-  "/dashboard": "nav.dashboard",
+  "/dashboard": "home.title",
   "/tasks": "nav.tasks",
   "/companies": "nav.companies",
   "/inbox": "nav.inbox",

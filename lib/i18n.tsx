@@ -118,7 +118,7 @@ const strings = {
 
   "nav.workspace": ["Workspace", "工作台", "工作台"],
   "nav.manage": ["Manage", "管理", "管理"],
-  "nav.dashboard": ["Dashboard", "儀表板", "仪表板"],
+  "nav.dashboard": ["Home", "首頁", "首页"],
   "nav.tasks": ["Tasks", "任務", "任务"],
   "nav.companies": ["Companies", "公司", "公司"],
   "nav.inbox": ["Inbox", "收件匣", "收件箱"],
@@ -393,7 +393,11 @@ const strings = {
     "分数越高越健康，综合付款、回复与任务账龄。",
   ],
 
+  "home.title": ["To-do", "待辦", "待办"],
+  "home.searchPlaceholder": ["Search todos…", "搜尋待辦…", "搜索待办…"],
   "tasks.title": ["Tasks", "任務", "任务"],
+  "tasks.blocked": ["Blocked", "受阻", "受阻"],
+  "tasks.urgent": ["Urgent", "緊急", "紧急"],
   "tasks.subtitle": [
     "Every commitment, owner and deadline in one shared board.",
     "所有承諾、負責人與截止日期，集中在同一個看板。",
