@@ -33,9 +33,10 @@ actions. There is no server runtime.
 3. In GitHub: **Settings → Pages → Build and deployment → Source** is set to
    **GitHub Actions**. The first workflow run creates the `github-pages`
    environment; approve it if the repository requires approval.
-4. Optional repository variable: `NEXT_PUBLIC_BASE_PATH` to override the
-   derived `/enwahs-demo` (use an empty value for a `<owner>.github.io` user
-   site or a custom domain).
+4. Optional repository variables:
+   - `NEXT_PUBLIC_BASE_PATH` to override the derived `/enwahs-demo`; set it to
+     `none` for a custom domain with no sub-path.
+   - `NEXT_PUBLIC_SITE_URL` to override the metadata/Open Graph URL.
 
 ## Standard deployment
 
@@ -81,7 +82,8 @@ Next's `basePath` is compiled in, so it cannot be changed after build.
 - `lib/utils.ts` `asset()` prefixes public files such as the logo.
 - A user/organisation Pages repository ending in `.github.io` gets an empty
   base path automatically.
-- A custom domain needs an empty base path and a `public/CNAME` file.
+- A custom domain needs `NEXT_PUBLIC_BASE_PATH=none`, a `public/CNAME` file and
+  optionally `NEXT_PUBLIC_SITE_URL`.
 
 If links work locally but 404 on Pages, check the workflow's base-path output
 and whether **Settings → Pages → Source** is GitHub Actions.

@@ -41,7 +41,9 @@ jobs:
         id: base_path
         shell: bash
         run: |
-          if [ -n "${{ vars.NEXT_PUBLIC_BASE_PATH }}" ]; then
+          if [ "${{ vars.NEXT_PUBLIC_BASE_PATH }}" = "none" ]; then
+            echo "value=" >> "$GITHUB_OUTPUT"
+          elif [ -n "${{ vars.NEXT_PUBLIC_BASE_PATH }}" ]; then
             echo "value=${{ vars.NEXT_PUBLIC_BASE_PATH }}" >> "$GITHUB_OUTPUT"
           elif [[ "${{ github.event.repository.name }}" == *.github.io ]]; then
             echo "value=" >> "$GITHUB_OUTPUT"
@@ -53,7 +55,7 @@ jobs:
         run: npm run build
         env:
           NEXT_PUBLIC_BASE_PATH: ${{ steps.base_path.outputs.value }}
-          NEXT_PUBLIC_SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
+          NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL || format('https://{0}.github.io/{1}', github.repository_owner, github.event.repository.name) }}
 
       - name: Configure Pages
         uses: actions/configure-pages@v5

@@ -124,8 +124,9 @@ The repository is configured for project Pages at
    deploys via the official Pages actions.
 
 The base path is derived from the repository name, so a `<owner>.github.io`
-user site gets an empty base path automatically. Override it with the
-repository variable `NEXT_PUBLIC_BASE_PATH` if deploying to a custom domain.
+user site gets an empty base path automatically. For a custom domain, set the
+repository variable `NEXT_PUBLIC_BASE_PATH` to `none` and optionally set
+`NEXT_PUBLIC_SITE_URL` to the custom URL.
 `trailingSlash: true` keeps folder `index.html` files working on Pages, so deep
 links such as `/companies/detail/?id=harbourview` can be refreshed directly.
 
