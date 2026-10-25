@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { CheckSquare, Lock, Plus, Search } from "lucide-react";
+import { CheckCircle2, CheckSquare, Circle, Clock3, Lock, Plus, Search } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { CompanyMark } from "@/components/ui/company-mark";
@@ -42,9 +42,30 @@ export default function HomePage() {
   ];
 
   const summary = [
-    { key: "todo", label: t("status.todo"), value: counts.todo, dot: "bg-slate-300" },
-    { key: "doing", label: t("status.doing"), value: counts.doing, dot: "bg-brand-500" },
-    { key: "done", label: t("status.done"), value: counts.done, dot: "bg-teal-500" },
+    {
+      key: "todo",
+      label: t("status.todo"),
+      value: counts.todo,
+      dot: "bg-slate-300",
+      icon: Circle,
+      tone: "bg-slate-100 text-slate-400",
+    },
+    {
+      key: "doing",
+      label: t("status.doing"),
+      value: counts.doing,
+      dot: "bg-brand-500",
+      icon: Clock3,
+      tone: "bg-brand-50 text-brand-600",
+    },
+    {
+      key: "done",
+      label: t("status.done"),
+      value: counts.done,
+      dot: "bg-teal-500",
+      icon: CheckCircle2,
+      tone: "bg-teal-50 text-teal-600",
+    },
   ];
 
   const tasks = useMemo(() => {
@@ -133,17 +154,25 @@ export default function HomePage() {
       </div>
 
       <div className="grid grid-cols-3 gap-2.5">
-        {summary.map((item) => (
-          <div key={item.key} className="surface-card px-4 py-4 sm:py-5">
-            <div className="flex items-center gap-1.5">
-              <span className={cn("h-1.5 w-1.5 rounded-full", item.dot)} />
-              <span className="text-[10px] font-medium text-slate-400">{item.label}</span>
+        {summary.map((item) => {
+          const Icon = item.icon;
+          return (
+            <div key={item.key} className="surface-card px-4 py-4 sm:py-5">
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex items-center gap-1.5">
+                  <span className={cn("h-1.5 w-1.5 rounded-full", item.dot)} />
+                  <span className="text-[10px] font-medium text-slate-400">{item.label}</span>
+                </div>
+                <span className={cn("flex h-8 w-8 items-center justify-center rounded-lg", item.tone)}>
+                  <Icon className="h-4 w-4" aria-hidden="true" />
+                </span>
+              </div>
+              <p className="mt-2 text-3xl font-semibold tracking-tight text-ink tabular-nums">
+                {item.value}
+              </p>
             </div>
-            <p className="mt-2 text-3xl font-semibold tracking-tight text-ink tabular-nums">
-              {item.value}
-            </p>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

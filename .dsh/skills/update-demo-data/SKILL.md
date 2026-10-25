@@ -111,7 +111,7 @@ on Linux. Do not commit `.next/` or `out/`.
 
 - Login at `/` with each preview role; the language switch persists.
 - Home todo list: tabs, Todo/Doing/Done counts, search, urgent and blocked filters.
-- Tasks: list, board, create/edit, mark done, kanban drag, filters.
+- Tasks: list, board, create/edit, mark done, kanban drag, filters; editor company icons, participant-style assignee picker and Todo/Doing/Done icon selector.
 - Companies: grid/table, add company, open a profile, add a note, create a task.
 - Inbox: switch WhatsApp/WeChat threads, read AI summary, create an extracted
   task, confirm the composer is read-only.

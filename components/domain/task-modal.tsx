@@ -2,7 +2,18 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Check, MessageSquare, Trash2 } from "lucide-react";
+import {
+  Check,
+  CheckCircle2,
+  ChevronDown,
+  Clock3,
+  Circle,
+  Flag,
+  MessageSquare,
+  Search,
+  Trash2,
+} from "lucide-react";
+import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { CompanyMark } from "@/components/ui/company-mark";
 import { Input, Select } from "@/components/ui/input";
@@ -63,10 +74,14 @@ export function TaskModal({
   }));
   const [errors, setErrors] = useState<{ title?: string; company?: string }>({});
   const [confirmingDelete, setConfirmingDelete] = useState(false);
+  const [assigneeOpen, setAssigneeOpen] = useState(false);
+  const [assigneeSearch, setAssigneeSearch] = useState("");
 
   useEffect(() => {
     if (!open) return;
     setConfirmingDelete(false);
+    setAssigneeOpen(false);
+    setAssigneeSearch("");
     setErrors({});
     if (task) {
       setForm({
@@ -98,6 +113,12 @@ export function TaskModal({
 
   const company = data.companies.find((item) => item.id === form.companyId);
   const selectedAssignee = data.team.find((member) => member.id === form.assigneeId);
+  const teamMatches = data.team.filter((member) =>
+    [pick(member.name), pick(member.title)]
+      .join(" ")
+      .toLowerCase()
+      .includes(assigneeSearch.trim().toLowerCase()),
+  );
   const update = (patch: Partial<FormState>) =>
     setForm((current) => ({ ...current, ...patch }));
 
@@ -258,30 +279,53 @@ export function TaskModal({
             )}
           />
           {errors.title && <p className="mt-1 text-[10px] text-red-600">{errors.title}</p>}
-          {selectedAssignee && (
-            <p className="mt-1.5 text-[9px] text-slate-400">
-              {pick(selectedAssignee.name)} · {pick(selectedAssignee.title)}
-            </p>
-          )}
         </div>
 
         <section>
           <p className="mb-2 text-[9px] font-medium uppercase tracking-[0.14em] text-slate-400">
             {t("editor.schedule")}
           </p>
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+          <div
+            className="flex items-center gap-1 rounded-xl border border-line bg-slate-50 p-1"
+            role="radiogroup"
+            aria-label={t("tasks.statusLabel")}
+          >
+            {statusOptions.map((option) => {
+              const Icon =
+                option.value === "doing" ? Clock3 : option.value === "done" ? CheckCircle2 : Circle;
+              const selected = form.status === option.value;
+              const iconTone =
+                option.value === "doing"
+                  ? "text-brand-600"
+                  : option.value === "done"
+                    ? "text-teal-600"
+                    : "text-slate-400";
+              return (
+                <button
+                  key={option.value}
+                  type="button"
+                  role="radio"
+                  aria-checked={selected}
+                  onClick={() => update({ status: option.value as TaskStatus })}
+                  className={cn(
+                    "flex flex-1 items-center justify-center gap-1.5 rounded-lg px-2 py-1.5 text-[10px] font-medium transition",
+                    selected
+                      ? "bg-white text-ink shadow-sm ring-1 ring-line"
+                      : "text-slate-400 hover:text-ink",
+                  )}
+                >
+                  <Icon className={cn("h-3.5 w-3.5", iconTone)} aria-hidden="true" />
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
+          <div className="mt-2 grid grid-cols-2 gap-2">
             <Input
               type="date"
               aria-label={t("tasks.dueLabel")}
               value={form.due}
               onChange={(event) => update({ due: event.target.value })}
-              className="h-9"
-            />
-            <Select
-              aria-label={t("tasks.statusLabel")}
-              value={form.status}
-              onChange={(event) => update({ status: event.target.value as TaskStatus })}
-              options={statusOptions}
               className="h-9"
             />
             <Select
@@ -291,31 +335,103 @@ export function TaskModal({
               options={priorityOptions}
               className="h-9"
             />
-          </div>
-        </section>
-
-        <section>
-          <p className="mb-2 text-[9px] font-medium uppercase tracking-[0.14em] text-slate-400">
-            {t("editor.assignment")}
-          </p>
-          <div className="grid grid-cols-2 gap-2">
-            <Select
-              aria-label={t("tasks.assigneeLabel")}
-              value={form.assigneeId}
-              onChange={(event) => update({ assigneeId: event.target.value })}
-              options={data.team.map((member) => ({
-                value: member.id,
-                label: pick(member.name),
-              }))}
-              className="h-9"
-            />
             <Select
               aria-label={t("tasks.channelLabel")}
               value={form.channel}
               onChange={(event) => update({ channel: event.target.value as Channel })}
               options={channelOptions}
               className="h-9"
+              containerClassName="col-span-2"
             />
+          </div>
+        </section>
+
+        <section>
+          <p className="mb-2 text-[9px] font-medium uppercase tracking-[0.14em] text-slate-400">
+            {t("editor.assignee")}
+          </p>
+          <div className="overflow-hidden rounded-xl border border-line">
+            <button
+              type="button"
+              onClick={() => setAssigneeOpen((value) => !value)}
+              className="flex w-full items-center gap-3 px-3 py-2.5 text-left transition hover:bg-slate-50/60"
+              aria-expanded={assigneeOpen}
+            >
+              {selectedAssignee ? (
+                <Avatar name={pick(selectedAssignee.name)} color={selectedAssignee.accent} size="md" />
+              ) : (
+                <span className="h-10 w-10 rounded-full bg-slate-100" />
+              )}
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-[11px] font-medium text-ink">
+                  {selectedAssignee ? pick(selectedAssignee.name) : t("tasks.selectAssignee")}
+                </span>
+                <span className="mt-0.5 block truncate text-[9px] text-slate-400">
+                  {selectedAssignee ? pick(selectedAssignee.title) : ""}
+                </span>
+              </span>
+              {selectedAssignee && (
+                <Flag className="h-3.5 w-3.5 text-gold-500" aria-label={t("editor.assignee")} />
+              )}
+              <ChevronDown
+                className={cn("h-3.5 w-3.5 text-slate-400 transition", assigneeOpen && "rotate-180")}
+                aria-hidden="true"
+              />
+            </button>
+            {assigneeOpen && (
+              <div className="border-t border-line bg-slate-50/60 p-2">
+                <Input
+                  value={assigneeSearch}
+                  onChange={(event) => setAssigneeSearch(event.target.value)}
+                  placeholder={t("editor.searchPeople")}
+                  leftIcon={<Search className="h-3.5 w-3.5" />}
+                  aria-label={t("editor.searchPeople")}
+                  className="h-8 bg-white text-[11px]"
+                />
+                <div className="mt-1 max-h-52 overflow-y-auto scrollbar-thin" role="radiogroup" aria-label={t("editor.assignee")}>
+                  {teamMatches.map((member) => {
+                    const selected = member.id === form.assigneeId;
+                    return (
+                      <button
+                        key={member.id}
+                        type="button"
+                        role="radio"
+                        aria-checked={selected}
+                        onClick={() => {
+                          update({ assigneeId: member.id });
+                          setAssigneeOpen(false);
+                          setAssigneeSearch("");
+                        }}
+                        className={cn(
+                          "flex w-full items-center gap-3 rounded-lg px-2 py-2 text-left transition",
+                          selected ? "bg-white shadow-sm" : "hover:bg-white/70",
+                        )}
+                      >
+                        <Avatar name={pick(member.name)} color={member.accent} size="sm" />
+                        <span className="min-w-0 flex-1">
+                          <span className="block truncate text-[10.5px] font-medium text-ink">
+                            {pick(member.name)}
+                          </span>
+                          <span className="mt-0.5 block truncate text-[9px] text-slate-400">
+                            {pick(member.title)}
+                          </span>
+                        </span>
+                        {selected ? (
+                          <CheckCircle2 className="h-4 w-4 text-teal-600" aria-hidden="true" />
+                        ) : (
+                          <Circle className="h-4 w-4 text-slate-300" aria-hidden="true" />
+                        )}
+                      </button>
+                    );
+                  })}
+                  {teamMatches.length === 0 && (
+                    <p className="px-2 py-4 text-center text-[10px] text-slate-400">
+                      {t("common.noResults")}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </section>
 
@@ -323,27 +439,42 @@ export function TaskModal({
           <p className="mb-2 text-[9px] font-medium uppercase tracking-[0.14em] text-slate-400">
             {t("common.company")}
           </p>
-          <div className="grid grid-cols-2 gap-2">
-            <Select
-              aria-label={t("tasks.companyLabel")}
-              value={form.companyId}
-              onChange={(event) => update({ companyId: event.target.value })}
-              options={data.companies.map((item) => ({
-                value: item.id,
-                label: pick(item.name),
-              }))}
-              className="h-9"
-            />
-            <label className="flex h-9 items-center gap-2 rounded-xl border border-line bg-white px-3 text-[11px] font-medium text-slate-600">
-              <input
-                type="checkbox"
-                checked={form.blocked}
-                onChange={(event) => update({ blocked: event.target.checked })}
-                className="h-3.5 w-3.5 rounded border-line accent-brand-600"
-              />
-              {t("tasks.blocked")}
-            </label>
+          <div className="grid grid-cols-5 gap-2 sm:grid-cols-10" role="radiogroup" aria-label={t("tasks.companyLabel")}>
+            {data.companies.map((item) => {
+              const selected = item.id === form.companyId;
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  role="radio"
+                  aria-checked={selected}
+                  aria-label={pick(item.name)}
+                  title={pick(item.name)}
+                  onClick={() => update({ companyId: item.id })}
+                  className={cn(
+                    "relative flex items-center justify-center rounded-xl p-1 transition",
+                    selected ? "bg-brand-50 ring-2 ring-brand-300" : "hover:bg-slate-50",
+                  )}
+                >
+                  <CompanyMark company={item} size="md" />
+                  {selected && (
+                    <span className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-brand-600 text-white ring-2 ring-white">
+                      <Check className="h-2.5 w-2.5" aria-hidden="true" />
+                    </span>
+                  )}
+                </button>
+              );
+            })}
           </div>
+          <label className="mt-3 inline-flex items-center gap-2 text-[11px] font-medium text-slate-600">
+            <input
+              type="checkbox"
+              checked={form.blocked}
+              onChange={(event) => update({ blocked: event.target.checked })}
+              className="h-3.5 w-3.5 rounded border-line accent-brand-600"
+            />
+            {t("tasks.blocked")}
+          </label>
           {errors.company && <p className="mt-1 text-[10px] text-red-600">{errors.company}</p>}
         </section>
 

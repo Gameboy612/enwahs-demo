@@ -399,7 +399,8 @@ const strings = {
   "tasks.title": ["Tasks", "任務", "任务"],
   "tasks.blocked": ["Blocked", "受阻", "受阻"],
   "editor.schedule": ["Schedule", "時間", "时间"],
-  "editor.assignment": ["Assignment", "指派", "指派"],
+  "editor.assignee": ["Person in charge", "負責人", "负责人"],
+  "editor.searchPeople": ["Search team…", "搜尋成員…", "搜索成员…"],
   "tasks.urgent": ["Urgent", "緊急", "紧急"],
   "tasks.subtitle": [
     "Every commitment, owner and deadline in one shared board.",
