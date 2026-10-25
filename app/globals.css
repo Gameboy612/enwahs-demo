@@ -10,8 +10,8 @@
   --gold: #c9a227;
   --ink: #16262b;
   --muted: #5f7378;
-  --line: #e1ebec;
-  --surface: #f5f9f9;
+  --line: #e8edef;
+  --surface: #fafcfc;
   --font-body: "Inter", "Noto Sans TC", "Noto Sans SC", "PingFang TC",
     "Microsoft JhengHei", system-ui, sans-serif;
 }
@@ -81,7 +81,7 @@ html[data-lang="zh-Hans"] {
 
 @layer components {
   .surface-card {
-    @apply rounded-2xl border border-line bg-white shadow-card;
+    @apply min-w-0 rounded-2xl border border-line bg-white shadow-card;
   }
 
   .surface-card-hover {

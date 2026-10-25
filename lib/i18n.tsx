@@ -29,6 +29,7 @@ const strings = {
   "app.dataAsOf": ["Demo data as of {date}", "演示資料截至 {date}", "演示数据截至 {date}"],
   "app.version": ["Version {version}", "版本 {version}", "版本 {version}"],
 
+  "common.demoLine": ["Demo · fictional data", "演示 · 虛構資料", "演示 · 虚构数据"],
   "common.search": ["Search", "搜尋", "搜索"],
   "common.searchPlaceholder": [
     "Search companies, tasks, people…",
@@ -175,6 +176,21 @@ const strings = {
   "notifications.hoursAgo": ["{count} hr ago", "{count} 小時前", "{count} 小时前"],
   "notifications.daysAgo": ["{count} d ago", "{count} 天前", "{count} 天前"],
 
+  "login.headlineShort": [
+    "Client work, in one view.",
+    "客戶事務，一目了然。",
+    "客户事务，一目了然。",
+  ],
+  "login.sublineShort": [
+    "WhatsApp, WeChat, companies and tasks. One workspace.",
+    "WhatsApp、微信、公司與任務，一個工作台。",
+    "WhatsApp、微信、公司与任务，一个工作台。",
+  ],
+  "login.disclaimerShort": [
+    "Demo · fictional data · no live connections.",
+    "演示 · 虛構資料 · 無真實連接。",
+    "演示 · 虚构数据 · 无真实连接。",
+  ],
   "login.badge": [
     "Internal demo for the Enwahs team",
     "Enwahs 團隊內部演示",
@@ -207,9 +223,9 @@ const strings = {
   ],
   "login.cardTitle": ["Enter the demo workspace", "進入演示工作台", "进入演示工作台"],
   "login.cardSubtitle": [
-    "No credentials needed. Choose who you'd like to preview as.",
-    "無需帳號密碼。選擇你想預覽的角色。",
-    "无需账号密码。选择你想预览的角色。",
+    "No credentials needed.",
+    "無需帳號密碼。",
+    "无需账号密码。",
   ],
   "login.viewAs": ["Preview as", "預覽身份", "预览身份"],
   "login.enter": ["Enter demo workspace", "進入演示工作台", "进入演示工作台"],
@@ -278,6 +294,21 @@ const strings = {
   "dashboard.kpi.responseHint": ["Down 6 min this week", "本週減少 6 分鐘", "本周减少 6 分钟"],
   "dashboard.kpi.minutes": ["min", "分鐘", "分钟"],
   "dashboard.aiBrief": ["AI daily brief", "AI 每日簡報", "AI 每日简报"],
+  "dashboard.brief1": [
+    "3 clients waiting on documents",
+    "3 間公司等待文件",
+    "3 家公司等待文件",
+  ],
+  "dashboard.brief2": [
+    "Golden Harbour · offshore claim",
+    "金港海鮮 · 離岸申索",
+    "金港海鲜 · 离岸申索",
+  ],
+  "dashboard.brief3": [
+    "2 payroll confirmations this week",
+    "2 項薪酬確認本週到期",
+    "2 项薪酬确认本周到期",
+  ],
   "dashboard.aiBriefHeadline": [
     "Three things worth your attention",
     "今天值得留意的三件事",

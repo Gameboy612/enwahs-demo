@@ -1,10 +1,9 @@
 "use client";
 
-import { CalendarDays, CheckSquare, GripVertical, MessageSquare } from "lucide-react";
+import { CalendarDays, CheckSquare } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { CompanyMark } from "@/components/ui/company-mark";
 import { ChannelIcon } from "@/components/ui/channel-icon";
-import { PriorityBadge } from "@/components/domain/badges";
 import { useDemo } from "@/lib/demo-store";
 import { useI18n } from "@/lib/i18n";
 import { isOverdue } from "@/lib/selectors";
@@ -26,8 +25,8 @@ export function TaskCard({
   const { t, pick, dueLabel } = useI18n();
   const company = data.companies.find((item) => item.id === task.companyId);
   const assignee = data.team.find((member) => member.id === task.assigneeId);
-  const overdue = isOverdue(task);
   const done = task.status === "done";
+  const overdue = isOverdue(task);
   const checked = task.checklist.filter((item) => item.done).length;
 
   return (
@@ -49,59 +48,55 @@ export function TaskCard({
       role="button"
       tabIndex={0}
       className={cn(
-        "group cursor-grab rounded-xl border border-line bg-white p-3.5 shadow-card transition hover:-translate-y-px hover:border-brand-200 hover:shadow-lift active:cursor-grabbing",
-        done && "bg-slate-50/70",
+        "cursor-grab rounded-xl border border-line bg-white p-3 transition hover:border-brand-200 active:cursor-grabbing",
+        done && "opacity-60",
       )}
     >
       <div className="flex items-center justify-between gap-2">
-        <PriorityBadge priority={task.priority} />
-        <GripVertical
-          className="h-3.5 w-3.5 text-slate-300 opacity-0 transition group-hover:opacity-100"
-          aria-hidden="true"
+        <span
+          className={cn(
+            "h-1.5 w-1.5 rounded-full",
+            task.priority === "high"
+              ? "bg-red-500"
+              : task.priority === "medium"
+                ? "bg-gold-500"
+                : "bg-slate-300",
+          )}
+          title={t(`common.${task.priority}`)}
         />
+        <span
+          className={cn(
+            "inline-flex items-center gap-1 text-[9px]",
+            overdue ? "text-red-500" : "text-slate-400",
+          )}
+        >
+          <CalendarDays className="h-2.5 w-2.5" aria-hidden="true" />
+          {dueLabel(task.due, done)}
+        </span>
       </div>
 
       <p
         className={cn(
-          "mt-2.5 text-[12.5px] font-semibold leading-snug text-ink",
+          "mt-2 text-[11.5px] font-medium leading-snug text-ink",
           done && "text-slate-400 line-through",
         )}
       >
         {pick(task.title)}
       </p>
 
-      {company && (
-        <div className="mt-2 flex items-center gap-2">
-          <CompanyMark company={company} size="xs" />
-          <span className="truncate text-[10px] text-slate-500">{pick(company.name)}</span>
-        </div>
-      )}
-
-      <div className="mt-3 flex items-center justify-between gap-2 border-t border-line/70 pt-2.5">
-        <div className="flex items-center gap-2 text-[10px] text-slate-400">
-          {assignee ? (
-            <Avatar name={pick(assignee.name)} color={assignee.accent} size="xs" />
-          ) : (
-            <span className="text-[9px]">{t("common.unassigned")}</span>
-          )}
-          <ChannelIcon channel={task.channel} size={12} />
+      <div className="mt-2.5 flex items-center justify-between gap-2 border-t border-line/60 pt-2">
+        <span className="flex min-w-0 items-center gap-1.5 text-[9px] text-slate-400">
+          {company && <CompanyMark company={company} size="xs" className="h-3.5 w-3.5 rounded-[4px] text-[6px]" />}
+          <span className="truncate">{company ? pick(company.shortName) : ""}</span>
+          <ChannelIcon channel={task.channel} size={9} />
           {task.checklist.length > 0 && (
             <span className="inline-flex items-center gap-0.5">
-              <CheckSquare className="h-3 w-3" aria-hidden="true" />
+              <CheckSquare className="h-2.5 w-2.5" aria-hidden="true" />
               {checked}/{task.checklist.length}
             </span>
           )}
-          {task.sourceThreadId && <MessageSquare className="h-3 w-3" aria-hidden="true" />}
-        </div>
-        <span
-          className={cn(
-            "inline-flex items-center gap-1 text-[10px] font-medium",
-            overdue ? "text-red-600" : done ? "text-slate-400" : "text-slate-500",
-          )}
-        >
-          <CalendarDays className="h-3 w-3" aria-hidden="true" />
-          {dueLabel(task.due, done)}
         </span>
+        {assignee && <Avatar name={pick(assignee.name)} color={assignee.accent} size="xs" />}
       </div>
     </div>
   );

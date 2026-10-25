@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Building2, Check } from "lucide-react";
+import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input, Select, Textarea } from "@/components/ui/input";
 import { Modal } from "@/components/ui/modal";
@@ -215,7 +215,6 @@ export function CompanyFormModal({
       open={open}
       onClose={onClose}
       title={company ? t("companies.editCompany") : t("companies.newCompany")}
-      description={t("companies.companyProfile")}
       size="lg"
       closeLabel={t("common.close")}
       footer={
@@ -230,10 +229,6 @@ export function CompanyFormModal({
       }
     >
       <form id="company-form" onSubmit={handleSubmit} className="space-y-5 px-6 py-5">
-        <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400">
-          <Building2 className="h-3.5 w-3.5 text-brand-500" aria-hidden="true" />
-          {t("companies.companyDetails")}
-        </div>
         <div className="grid gap-4 sm:grid-cols-2">
           <Input
             label={t("companies.companyName")}
@@ -330,9 +325,6 @@ export function CompanyFormModal({
         />
 
         <div className="border-t border-line pt-4">
-          <p className="mb-3 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400">
-            {t("companies.contactDetails")}
-          </p>
           <div className="grid gap-4 sm:grid-cols-2">
             <Input
               label={t("companies.contactName")}
@@ -358,13 +350,6 @@ export function CompanyFormModal({
           </div>
         </div>
 
-        <Input
-          label={t("companies.tagsLabel")}
-          value={form.tags}
-          onChange={(event) => update({ tags: event.target.value })}
-          placeholder={t("companies.tagsPlaceholder")}
-          hint={t("common.optional")}
-        />
       </form>
     </Modal>
   );

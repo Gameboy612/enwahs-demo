@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { MessageSquare, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input, Select, Textarea } from "@/components/ui/input";
+import { Input, Select } from "@/components/ui/input";
 import { Modal } from "@/components/ui/modal";
 import { useAuth } from "@/lib/auth";
 import { DEMO_TODAY } from "@/lib/constants";
@@ -166,7 +166,7 @@ export function TaskModal({
       description={
         task
           ? pick(data.companies.find((company) => company.id === task.companyId)?.name ?? task.title)
-          : t("tasks.descriptionPlaceholder")
+          : undefined
       }
       size="lg"
       closeLabel={t("common.close")}
@@ -215,12 +215,6 @@ export function TaskModal({
           error={errors.title}
           required
           autoFocus
-        />
-        <Textarea
-          label={t("tasks.description")}
-          value={form.description}
-          onChange={(event) => update({ description: event.target.value })}
-          placeholder={t("tasks.descriptionPlaceholder")}
         />
         <div className="grid gap-4 sm:grid-cols-2">
           <Select

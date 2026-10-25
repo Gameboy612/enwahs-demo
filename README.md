@@ -17,10 +17,10 @@ client data is fictional.
 | Area | What you can do |
 |---|---|
 | **Login** (`/`) | One-click demo entry; preview as Partner, CS Team Lead or CS Assistant; EN / 繁中 / 简中 |
-| **Dashboard** (`/dashboard/`) | KPIs, AI daily brief, task pipeline, conversation volume, priority queue, deadlines, company health |
+| **Dashboard** (`/dashboard/`) | KPIs, AI daily brief, priority tasks, deadlines and recent conversations |
 | **Tasks** (`/tasks/`) | List and kanban board, filters, quick views, create/edit/delete, checklist progress, drag between columns |
 | **Companies** (`/companies/`) | Card and table views, search/filter, add company, health and risk |
-| **Company profile** (`/companies/detail/?id=…`) | Contacts, services, open/completed tasks, activity timeline, notes, edit company |
+| **Company profile** (`/companies/detail/?id=…`) | Contacts, services, open/completed tasks, notes, edit company |
 | **Inbox** (`/inbox/`) | Simulated WhatsApp/WeChat threads, AI summary, extracted tasks, one-click task creation, read-only composer |
 | **Reports** (`/reports/`) | Throughput, channel mix, volume trend, client health, team workload, CSV export |
 | **Team** (`/team/`) | Directory, capacity, workload, assigned tasks, member detail |

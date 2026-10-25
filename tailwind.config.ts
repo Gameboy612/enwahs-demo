@@ -49,9 +49,9 @@ const config: Config = {
           900: "#5f401d",
         },
         ink: "#16262b",
-        surface: "#f5f9f9",
-        "surface-2": "#eef5f5",
-        line: "#e1ebec",
+        surface: "#fafcfc",
+        "surface-2": "#f3f7f7",
+        line: "#e8edef",
       },
       fontFamily: {
         sans: [
@@ -75,7 +75,7 @@ const config: Config = {
         mono: ["SFMono-Regular", "Menlo", "Consolas", "monospace"],
       },
       boxShadow: {
-        card: "0 1px 2px rgba(10, 36, 48, 0.04), 0 8px 24px -16px rgba(10, 36, 48, 0.18)",
+        card: "0 1px 2px rgba(10, 36, 48, 0.03)",
         lift: "0 2px 4px rgba(10, 36, 48, 0.05), 0 18px 40px -20px rgba(10, 36, 48, 0.28)",
         sidebar: "18px 0 50px -30px rgba(5, 41, 40, 0.65)",
         ring: "0 0 0 3px rgba(21, 152, 149, 0.18)",

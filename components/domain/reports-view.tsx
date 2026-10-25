@@ -11,7 +11,6 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
@@ -118,9 +117,7 @@ export function ReportsView() {
   return (
     <div className="space-y-5">
       <PageHeader
-        eyebrow={t("nav.manage")}
         title={t("reports.title")}
-        description={t("reports.subtitle")}
         actions={
           <>
             <SegmentedControl
@@ -147,34 +144,26 @@ export function ReportsView() {
         <StatCard
           label={t("reports.tasksClosed")}
           value={formatNumber(completed)}
-          hint={t("reports.vsLast")}
           icon={<CheckCircle2 className="h-4 w-4" />}
           tone="teal"
-          trend={{ direction: "up", value: "+12%" }}
         />
         <StatCard
           label={t("reports.avgCompletion")}
           value={`2.4 ${t("reports.days")}`}
-          hint={t("reports.vsLast")}
           icon={<Clock3 className="h-4 w-4" />}
           tone="brand"
-          trend={{ direction: "down", value: "-0.3d", good: true }}
         />
         <StatCard
           label={t("reports.responseTime")}
           value={`${avgResponse} ${t("reports.minutes")}`}
-          hint={t("reports.vsLast")}
           icon={<Timer className="h-4 w-4" />}
           tone="gold"
-          trend={{ direction: "down", value: "-6m", good: true }}
         />
         <StatCard
           label={t("reports.aiHandled")}
           value="64%"
-          hint={t("reports.note")}
           icon={<Sparkles className="h-4 w-4" />}
           tone="brand"
-          trend={{ direction: "up", value: "+8%" }}
         />
       </div>
 
@@ -183,7 +172,6 @@ export function ReportsView() {
           <CardHeader>
             <div>
               <h3 className="text-[13px] font-semibold text-ink">{t("reports.throughput")}</h3>
-              <p className="mt-0.5 text-[10px] text-slate-400">{t("reports.throughputSub")}</p>
             </div>
             <span className="rounded-full bg-teal-50 px-2 py-0.5 text-[9px] font-semibold text-teal-700">
               {formatNumber(created)} → {formatNumber(completed)}
@@ -246,7 +234,6 @@ export function ReportsView() {
               <h3 className="text-[13px] font-semibold text-ink">
                 {t("reports.volumeTrend")}
               </h3>
-              <p className="mt-0.5 text-[10px] text-slate-400">{t("reports.monthlyVolume")}</p>
             </div>
             <TrendingUp className="h-4 w-4 text-teal-500" aria-hidden="true" />
           </CardHeader>
@@ -312,7 +299,6 @@ export function ReportsView() {
               <h3 className="text-[13px] font-semibold text-ink">
                 {t("reports.teamWorkload")}
               </h3>
-              <p className="mt-0.5 text-[10px] text-slate-400">{t("reports.workloadHint")}</p>
             </div>
             <span className="text-[10px] text-slate-400">
               {open.length} {t("common.openTasks")}
@@ -415,12 +401,6 @@ export function ReportsView() {
         </Card>
       </div>
 
-      <div className="flex flex-col gap-2 rounded-xl border border-dashed border-line bg-white/60 px-4 py-3 text-[10px] text-slate-400 sm:flex-row sm:items-center sm:justify-between">
-        <span>{t("reports.note")}</span>
-        <Badge tone="outline">
-          {t("footer.demo")} · {formatDate(`${current.month}-01`, "month")}
-        </Badge>
-      </div>
     </div>
   );
 }

@@ -269,13 +269,6 @@ export function CommandPalette({
           )}
         </div>
 
-        <div className="flex items-center justify-between gap-3 border-t border-line bg-slate-50/70 px-4 py-2.5 text-[10px] text-slate-400">
-          <span>{t("command.hint")}</span>
-          <span className="inline-flex items-center gap-1">
-            <CornerDownLeft className="h-3 w-3" aria-hidden="true" />
-            {t("command.open")}
-          </span>
-        </div>
       </div>
     </div>,
     document.body,
