@@ -21,6 +21,7 @@ export type ModalProps = {
   description?: ReactNode;
   children?: ReactNode;
   footer?: ReactNode;
+  headerActions?: ReactNode;
   size?: keyof typeof sizes;
   className?: string;
   closeLabel?: string;
@@ -33,6 +34,7 @@ export function Modal({
   description,
   children,
   footer,
+  headerActions,
   size = "md",
   className,
   closeLabel = "Close",
@@ -106,14 +108,17 @@ export function Modal({
                 </p>
               )}
             </div>
-            <button
-              type="button"
-              onClick={onClose}
-              aria-label={closeLabel}
-              className="rounded-xl p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
-            >
-              <X className="h-5 w-5" aria-hidden="true" />
-            </button>
+            <div className="flex shrink-0 items-center gap-1">
+              {headerActions}
+              <button
+                type="button"
+                onClick={onClose}
+                aria-label={closeLabel}
+                className="rounded-lg p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
+              >
+                <X className="h-4 w-4" aria-hidden="true" />
+              </button>
+            </div>
           </div>
         )}
         <div className="max-h-[calc(92vh-9.5rem)] overflow-y-auto scrollbar-thin">

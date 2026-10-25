@@ -398,6 +398,8 @@ const strings = {
   "home.later": ["Later", "稍後", "稍后"],
   "tasks.title": ["Tasks", "任務", "任务"],
   "tasks.blocked": ["Blocked", "受阻", "受阻"],
+  "editor.schedule": ["Schedule", "時間", "时间"],
+  "editor.assignment": ["Assignment", "指派", "指派"],
   "tasks.urgent": ["Urgent", "緊急", "紧急"],
   "tasks.subtitle": [
     "Every commitment, owner and deadline in one shared board.",

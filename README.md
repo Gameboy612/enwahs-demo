@@ -14,6 +14,8 @@ client data is fictional.
 
 ![Home todo list](docs/screenshots/home.webp)
 
+![Task editor](docs/screenshots/editor.webp)
+
 ## What is inside
 
 | Area | What you can do |
