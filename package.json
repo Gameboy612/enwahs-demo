@@ -1,0 +1,35 @@
+{
+  "name": "enwahs-crm-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Enwahs CRM — static demo workspace for Enwahs Accounting & Taxation Limited",
+  "scripts": {
+    "dev": "next dev",
+    "build": "node scripts/build.mjs",
+    "preview": "npx --yes serve@14 out -l 4173",
+    "typecheck": "tsc --noEmit",
+    "data:validate": "tsx scripts/validate-data.ts",
+    "check": "npm run typecheck && npm run data:validate && npm run build"
+  },
+  "dependencies": {
+    "clsx": "2.1.1",
+    "lucide-react": "1.61.0",
+    "next": "15.5.28",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "tailwind-merge": "3.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "autoprefixer": "10.4.27",
+    "postcss": "8.5.31",
+    "tailwindcss": "3.4.19",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
