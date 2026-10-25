@@ -36,7 +36,7 @@ actions. There is no server runtime.
 4. Optional repository variables:
    - `NEXT_PUBLIC_BASE_PATH` to override the derived `/enwahs-demo`; set it to
      `none` for a custom domain with no sub-path.
-   - `NEXT_PUBLIC_SITE_URL` to override the metadata/Open Graph URL.
+   - `NEXT_PUBLIC_SITE_URL` to override the metadata origin (no path).
 
 ## Standard deployment
 

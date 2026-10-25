@@ -127,7 +127,7 @@ The repository is configured for Pages at
 The base path is derived from the repository name, so a `<owner>.github.io`
 user site gets an empty base path automatically. For a custom domain, set the
 repository variable `NEXT_PUBLIC_BASE_PATH` to `none` and optionally set
-`NEXT_PUBLIC_SITE_URL` to the custom URL.
+`NEXT_PUBLIC_SITE_URL` to the custom site origin.
 `trailingSlash: true` keeps folder `index.html` files working on Pages, so deep
 links such as `/companies/detail/?id=harbourview` can be refreshed directly.
 

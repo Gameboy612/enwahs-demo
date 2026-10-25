@@ -7,10 +7,14 @@ import { DemoProvider } from "@/lib/demo-store";
 import { ToastProvider } from "@/components/ui/toast";
 import { asset } from "@/lib/utils";
 
+// metadataBase is the site origin only; asset() already adds the Pages base
+// path, so using a URL with /enwahs-demo here would double the sub-path.
+const siteUrl = new URL(
+  process.env.NEXT_PUBLIC_SITE_URL || "https://wankun.kapakki.com",
+);
+
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://wankun.kapakki.com/enwahs-demo",
-  ),
+  metadataBase: new URL(siteUrl.origin),
   title: {
     default: "Enwahs CRM — Client Operations Workspace",
     template: "%s · Enwahs CRM",
