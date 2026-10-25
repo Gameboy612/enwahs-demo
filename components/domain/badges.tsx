@@ -2,10 +2,11 @@
 
 import {
   AlertTriangle,
-  CheckCircle2,
   Circle,
-  Clock3,
+  CircleCheck,
   Flag,
+  LoaderCircle,
+  ScrollText,
   ShieldAlert,
   ShieldCheck,
   Sparkles,
@@ -32,9 +33,9 @@ export function TaskStatusBadge({
 }) {
   const { t } = useI18n();
   const map: Record<TaskStatus, { tone: BadgeTone; icon: typeof Circle }> = {
-    todo: { tone: "neutral", icon: Circle },
-    doing: { tone: "brand", icon: Clock3 },
-    done: { tone: "teal", icon: CheckCircle2 },
+    todo: { tone: "neutral", icon: ScrollText },
+    doing: { tone: "brand", icon: LoaderCircle },
+    done: { tone: "teal", icon: CircleCheck },
   };
   const { tone, icon: Icon } = map[status];
   return (

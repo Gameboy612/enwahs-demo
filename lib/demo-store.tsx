@@ -21,6 +21,7 @@ import type {
   RiskLevel,
   ServiceKey,
   Task,
+  AssigneeRole,
   TaskPriority,
   TaskStatus,
   Thread,
@@ -39,7 +40,8 @@ export type TaskDraft = {
   title: Localized;
   description: Localized;
   companyId: string;
-  assigneeId: string;
+  assigneeIds: string[];
+  assigneeRoles?: Record<string, AssigneeRole>;
   status: TaskStatus;
   priority: TaskPriority;
   due: string;
@@ -96,6 +98,34 @@ function cloneSeed(): DemoData {
     : JSON.parse(JSON.stringify(seedData));
 }
 
+
+function normalizeDemoData(input: DemoData): DemoData {
+  const tasks = input.tasks.map((task) => {
+    const legacy = task as Task & { assigneeId?: string };
+    const assigneeIds =
+      Array.isArray(legacy.assigneeIds) && legacy.assigneeIds.length > 0
+        ? legacy.assigneeIds
+        : legacy.assigneeId
+          ? [legacy.assigneeId]
+          : [];
+    return { ...task, assigneeIds };
+  });
+  const threads = input.threads.map((thread) => ({
+    ...thread,
+    extractedTasks: (thread.extractedTasks ?? []).map((extracted) => {
+      const legacy = extracted as typeof extracted & { assigneeId?: string };
+      const assigneeIds =
+        Array.isArray(legacy.assigneeIds) && legacy.assigneeIds.length > 0
+          ? legacy.assigneeIds
+          : legacy.assigneeId
+            ? [legacy.assigneeId]
+            : [];
+      return { ...extracted, assigneeIds };
+    }),
+  }));
+  return { ...input, tasks, threads };
+}
+
 function isDemoData(value: unknown): value is DemoData {
   if (!value || typeof value !== "object") return false;
   const candidate = value as Partial<DemoData>;
@@ -106,6 +136,15 @@ function isDemoData(value: unknown): value is DemoData {
     Array.isArray(candidate.threads) &&
     Array.isArray(candidate.notifications) &&
     !!candidate.settings
+  );
+}
+
+function normalizeAssigneeRoles(
+  assigneeIds: string[],
+  roles: Record<string, AssigneeRole> = {},
+): Record<string, AssigneeRole> {
+  return Object.fromEntries(
+    assigneeIds.map((id, index) => [id, roles[id] ?? (index === 0 ? "lead" : "support")]),
   );
 }
 
@@ -132,7 +171,7 @@ export function DemoProvider({ children }: { children: ReactNode }) {
         const parsed = JSON.parse(raw);
         if (isDemoData(parsed)) {
           setData({
-            ...parsed,
+            ...normalizeDemoData(parsed),
             settings: { ...seedData.settings, ...parsed.settings },
           });
         }
@@ -158,7 +197,8 @@ export function DemoProvider({ children }: { children: ReactNode }) {
       title: draft.title,
       description: draft.description,
       companyId: draft.companyId,
-      assigneeId: draft.assigneeId,
+      assigneeIds: draft.assigneeIds,
+      assigneeRoles: normalizeAssigneeRoles(draft.assigneeIds, draft.assigneeRoles),
       status: draft.status,
       priority: draft.priority,
       due: draft.due,
@@ -347,7 +387,7 @@ export function DemoProvider({ children }: { children: ReactNode }) {
         title: extracted.title,
         description: extracted.description,
         companyId: thread.companyId,
-        assigneeId: extracted.assigneeId,
+        assigneeIds: extracted.assigneeIds,
         status: "todo",
         priority: extracted.priority,
         due: extracted.due,

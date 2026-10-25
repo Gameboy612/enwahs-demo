@@ -1,7 +1,8 @@
 "use client";
 
-import { CalendarDays, CheckSquare, Lock, MessageSquare } from "lucide-react";
-import { Avatar } from "@/components/ui/avatar";
+import { CalendarDays, CheckSquare, MessageSquare, Pause } from "lucide-react";
+import { AssigneeStack } from "@/components/domain/assignee-stack";
+import { TaskStateMenu } from "@/components/domain/task-state-menu";
 import { CompanyMark } from "@/components/ui/company-mark";
 import { ChannelIcon } from "@/components/ui/channel-icon";
 import { useDemo } from "@/lib/demo-store";
@@ -17,10 +18,10 @@ export function TaskRow({
   task: Task;
   onOpen: (task: Task) => void;
 }) {
-  const { data, setTaskStatus } = useDemo();
+  const { data } = useDemo();
   const { t, pick, dueLabel } = useI18n();
   const company = data.companies.find((item) => item.id === task.companyId);
-  const assignee = data.team.find((member) => member.id === task.assigneeId);
+  const assignees = data.team.filter((member) => task.assigneeIds.includes(member.id));
   const done = task.status === "done";
   const overdue = isOverdue(task);
   const checked = task.checklist.filter((item) => item.done).length;
@@ -41,30 +42,7 @@ export function TaskRow({
         done && "opacity-60",
       )}
     >
-      <button
-        type="button"
-        onClick={(event) => {
-          event.stopPropagation();
-          setTaskStatus(task.id, done ? "todo" : "done");
-        }}
-        aria-label={done ? t("common.reopen") : t("common.markDone")}
-        className={cn(
-          "flex h-4 w-4 shrink-0 items-center justify-center rounded-full border transition",
-          done
-            ? "border-teal-500 bg-teal-500 text-white"
-            : "border-slate-300 bg-white text-transparent hover:border-teal-500",
-        )}
-      >
-        <svg viewBox="0 0 12 12" className="h-2 w-2" fill="none" aria-hidden="true">
-          <path
-            d="M2 6.2 4.7 9 10 3.2"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </button>
+      <TaskStateMenu task={task} />
 
       <span
         className={cn(
@@ -107,12 +85,12 @@ export function TaskRow({
           )}
           {task.sourceThreadId && <MessageSquare className="h-2.5 w-2.5" aria-hidden="true" />}
           {task.blocked && (
-            <Lock className="h-2.5 w-2.5 text-amber-500" aria-label={t("tasks.blocked")} />
+            <Pause className="h-2.5 w-2.5 text-amber-500" aria-label={t("tasks.blocked")} />
           )}
         </span>
       </span>
 
-      {assignee && <Avatar name={pick(assignee.name)} color={assignee.accent} size="xs" />}
+      <AssigneeStack members={assignees} />
 
       <span
         className={cn(

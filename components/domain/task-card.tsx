@@ -1,7 +1,7 @@
 "use client";
 
-import { CalendarDays, CheckSquare, Lock } from "lucide-react";
-import { Avatar } from "@/components/ui/avatar";
+import { CalendarDays, CheckSquare, Pause } from "lucide-react";
+import { AssigneeStack } from "@/components/domain/assignee-stack";
 import { CompanyMark } from "@/components/ui/company-mark";
 import { ChannelIcon } from "@/components/ui/channel-icon";
 import { useDemo } from "@/lib/demo-store";
@@ -24,7 +24,7 @@ export function TaskCard({
   const { data } = useDemo();
   const { t, pick, dueLabel } = useI18n();
   const company = data.companies.find((item) => item.id === task.companyId);
-  const assignee = data.team.find((member) => member.id === task.assigneeId);
+  const assignees = data.team.filter((member) => task.assigneeIds.includes(member.id));
   const done = task.status === "done";
   const overdue = isOverdue(task);
   const checked = task.checklist.filter((item) => item.done).length;
@@ -54,7 +54,7 @@ export function TaskCard({
     >
       <div className="flex items-center justify-between gap-2">
         <span className="flex items-center gap-1.5">
-          {task.blocked && <Lock className="h-2.5 w-2.5 text-amber-500" aria-label={t("tasks.blocked")} />}
+          {task.blocked && <Pause className="h-2.5 w-2.5 text-amber-500" aria-label={t("tasks.blocked")} />}
           <span
             className={cn(
               "h-1.5 w-1.5 rounded-full",
@@ -99,7 +99,7 @@ export function TaskCard({
             </span>
           )}
         </span>
-        {assignee && <Avatar name={pick(assignee.name)} color={assignee.accent} size="xs" />}
+        <AssigneeStack members={assignees} />
       </div>
     </div>
   );

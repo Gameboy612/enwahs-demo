@@ -71,7 +71,7 @@ export function priorityCounts(tasks: Task[]) {
 }
 
 export function memberLoad(member: TeamMember, tasks: Task[]) {
-  const assigned = openTasks(tasks).filter((task) => task.assigneeId === member.id);
+  const assigned = openTasks(tasks).filter((task) => task.assigneeIds.includes(member.id));
   const weightedHours = assigned.reduce(
     (total, task) => total + effortHours[task.priority],
     0,

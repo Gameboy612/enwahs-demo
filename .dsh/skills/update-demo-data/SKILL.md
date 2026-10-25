@@ -37,7 +37,7 @@ keep their old copy until **Settings → Reset demo data** is used.
 3. **Use fictional but plausible HK data.** Names, addresses, emails and phone
    numbers must be invented. Use `example.hk` style domains for new contacts.
 4. **IDs are references.** A task's `companyId` must exist in `companies`; an
-   `assigneeId` must exist in `team`; a `sourceThreadId` must exist in
+   `assigneeIds` must all exist in `team`; a `sourceThreadId` must exist in
    `threads`. The validator checks this.
 5. **Dates are frozen around `DEMO_TODAY`.** The demo currently uses
    `2026-10-26`. If you move the demo date, shift due dates, note timestamps,
@@ -62,7 +62,9 @@ keep their old copy until **Settings → Reset demo data** is used.
 
 1. Add to the `tasks` array with a unique `id`.
 2. Fill `title`, `description`, `tags` and checklist labels in all languages.
-3. Reference an existing `companyId` and `assigneeId`.
+3. Reference an existing `companyId` and one or more existing `assigneeIds`.
+   The first assignee is the lead; optional `assigneeRoles` map each ID to
+   `"lead"`, `"reviewer"` or `"support"`.
 4. Set `status` (`todo` / `doing` / `done`), `priority`
    (`high` / `medium` / `low`), `due` (`YYYY-MM-DD`) and `channel`
    (`whatsapp` / `wechat` / `email` / `internal`).
@@ -78,7 +80,7 @@ keep their old copy until **Settings → Reset demo data** is used.
 3. Keep `messages` in chronological order with unique IDs, an author, a
    `Localized` body, a timestamp and a `kind` (`text`, `image`, `voice`, `file`
    or `note`).
-4. Add `extractedTasks` with an existing `assigneeId` and a due date. These are
+4. Add `extractedTasks` with existing `assigneeIds` and a due date. These are
    the cards in the AI assistant panel; creating one adds a normal task with
    `sourceThreadId` set.
 5. Set `unread`, `sentiment`, `responseMinutes` and `lastAt`.

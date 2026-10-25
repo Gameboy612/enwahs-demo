@@ -7,6 +7,7 @@ export type Localized = {
 };
 
 export type TaskStatus = "todo" | "doing" | "done";
+export type AssigneeRole = "lead" | "reviewer" | "support";
 export type TaskPriority = "high" | "medium" | "low";
 export type Channel = "whatsapp" | "wechat" | "email" | "internal";
 export type CompanyStatus = "active" | "at-risk" | "onboarding" | "dormant";
@@ -85,7 +86,8 @@ export type Task = {
   title: Localized;
   description: Localized;
   companyId: string;
-  assigneeId: string;
+  assigneeIds: string[];
+  assigneeRoles?: Record<string, AssigneeRole>;
   status: TaskStatus;
   priority: TaskPriority;
   due: string;
@@ -115,7 +117,7 @@ export type ExtractedTask = {
   description: Localized;
   priority: TaskPriority;
   due: string;
-  assigneeId: string;
+  assigneeIds: string[];
   channel: Channel;
 };
 

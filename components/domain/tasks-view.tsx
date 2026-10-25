@@ -58,14 +58,19 @@ export function TasksView() {
       .filter((task) => {
         if (filters.status !== "all" && task.status !== filters.status) return false;
         if (filters.priority !== "all" && task.priority !== filters.priority) return false;
-        if (filters.assigneeId !== "all" && task.assigneeId !== filters.assigneeId) return false;
+        if (
+          filters.assigneeId !== "all" &&
+          !task.assigneeIds.includes(filters.assigneeId)
+        ) {
+          return false;
+        }
         if (query) {
           const company = data.companies.find((item) => item.id === task.companyId);
-          const assignee = data.team.find((item) => item.id === task.assigneeId);
+          const assignees = data.team.filter((item) => task.assigneeIds.includes(item.id));
           const haystack = [
             pick(task.title),
             company ? pick(company.name) : "",
-            assignee ? pick(assignee.name) : "",
+            ...assignees.map((assignee) => pick(assignee.name)),
           ]
             .join(" ")
             .toLowerCase();

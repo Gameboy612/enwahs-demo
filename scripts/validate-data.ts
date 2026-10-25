@@ -113,7 +113,25 @@ for (const task of seedData.tasks) {
     checkLocalized(item.label, `${at}.checklist[${index}].label`),
   );
   if (!companyIds.has(task.companyId)) fail(`${at}: unknown company "${task.companyId}"`);
-  if (!memberIds.has(task.assigneeId)) fail(`${at}: unknown assignee "${task.assigneeId}"`);
+  if (!Array.isArray(task.assigneeIds) || task.assigneeIds.length === 0) {
+    fail(`${at}: at least one assignee is required`);
+  } else {
+    task.assigneeIds.forEach((assigneeId, index) => {
+      if (!memberIds.has(assigneeId)) {
+        fail(`${at}.assigneeIds[${index}]: unknown assignee "${assigneeId}"`);
+      }
+    });
+    if (task.assigneeRoles) {
+      Object.entries(task.assigneeRoles).forEach(([assigneeId, role]) => {
+        if (!task.assigneeIds.includes(assigneeId)) {
+          fail(`${at}.assigneeRoles: "${assigneeId}" is not assigned`);
+        }
+        if (!["lead", "reviewer", "support"].includes(role)) {
+          fail(`${at}.assigneeRoles.${assigneeId}: invalid role "${role}"`);
+        }
+      });
+    }
+  }
   if (task.sourceThreadId && !threadIds.has(task.sourceThreadId)) {
     fail(`${at}: unknown source thread "${task.sourceThreadId}"`);
   }
@@ -136,8 +154,16 @@ for (const thread of seedData.threads) {
   thread.extractedTasks.forEach((extracted, index) => {
     checkLocalized(extracted.title, `${at}.extractedTasks[${index}].title`);
     checkLocalized(extracted.description, `${at}.extractedTasks[${index}].description`);
-    if (!memberIds.has(extracted.assigneeId)) {
-      fail(`${at}.extractedTasks[${index}]: unknown assignee "${extracted.assigneeId}"`);
+    if (!Array.isArray(extracted.assigneeIds) || extracted.assigneeIds.length === 0) {
+      fail(`${at}.extractedTasks[${index}]: at least one assignee is required`);
+    } else {
+      extracted.assigneeIds.forEach((assigneeId, assigneeIndex) => {
+        if (!memberIds.has(assigneeId)) {
+          fail(
+            `${at}.extractedTasks[${index}].assigneeIds[${assigneeIndex}]: unknown assignee "${assigneeId}"`,
+          );
+        }
+      });
     }
     checkDate(extracted.due, `${at}.extractedTasks[${index}].due`);
   });

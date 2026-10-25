@@ -1,8 +1,20 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { CheckCircle2, CheckSquare, Circle, Clock3, Lock, Plus, Search } from "lucide-react";
-import { Avatar } from "@/components/ui/avatar";
+import {
+  CircleCheck,
+  CheckSquare,
+  LayoutGrid,
+  LoaderCircle,
+  Pause,
+  Plus,
+  ScrollText,
+  Search,
+  TriangleAlert,
+  type LucideIcon,
+} from "lucide-react";
+import { AssigneeStack } from "@/components/domain/assignee-stack";
+import { TaskStateMenu } from "@/components/domain/task-state-menu";
 import { Button } from "@/components/ui/button";
 import { CompanyMark } from "@/components/ui/company-mark";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -32,13 +44,13 @@ export default function HomePage() {
     done: data.tasks.filter((task) => task.status === "done").length,
   };
 
-  const tabs: { key: HomeFilter; label: string }[] = [
-    { key: "all", label: t("common.all") },
-    { key: "todo", label: t("status.todo") },
-    { key: "doing", label: t("status.doing") },
-    { key: "done", label: t("status.done") },
-    { key: "urgent", label: t("tasks.urgent") },
-    { key: "blocked", label: t("tasks.blocked") },
+  const tabs: { key: HomeFilter; label: string; icon: LucideIcon; tone: string }[] = [
+    { key: "all", label: t("common.all"), icon: LayoutGrid, tone: "text-slate-400" },
+    { key: "todo", label: t("status.todo"), icon: ScrollText, tone: "text-slate-400" },
+    { key: "doing", label: t("status.doing"), icon: LoaderCircle, tone: "text-brand-600" },
+    { key: "done", label: t("status.done"), icon: CircleCheck, tone: "text-teal-600" },
+    { key: "urgent", label: t("tasks.urgent"), icon: TriangleAlert, tone: "text-red-500" },
+    { key: "blocked", label: t("tasks.blocked"), icon: Pause, tone: "text-amber-500" },
   ];
 
   const summary = [
@@ -46,24 +58,21 @@ export default function HomePage() {
       key: "todo",
       label: t("status.todo"),
       value: counts.todo,
-      dot: "bg-slate-300",
-      icon: Circle,
+      icon: ScrollText,
       tone: "bg-slate-100 text-slate-400",
     },
     {
       key: "doing",
       label: t("status.doing"),
       value: counts.doing,
-      dot: "bg-brand-500",
-      icon: Clock3,
+      icon: LoaderCircle,
       tone: "bg-brand-50 text-brand-600",
     },
     {
       key: "done",
       label: t("status.done"),
       value: counts.done,
-      dot: "bg-teal-500",
-      icon: CheckCircle2,
+      icon: CircleCheck,
       tone: "bg-teal-50 text-teal-600",
     },
   ];
@@ -82,11 +91,11 @@ export default function HomePage() {
       .filter((task) => {
         if (!query) return true;
         const company = data.companies.find((item) => item.id === task.companyId);
-        const assignee = data.team.find((item) => item.id === task.assigneeId);
+        const assignees = data.team.filter((item) => task.assigneeIds.includes(item.id));
         return [
           pick(task.title),
           company ? pick(company.name) : "",
-          assignee ? pick(assignee.name) : "",
+          ...assignees.map((assignee) => pick(assignee.name)),
         ]
           .join(" ")
           .toLowerCase()
@@ -157,14 +166,13 @@ export default function HomePage() {
         {summary.map((item) => {
           const Icon = item.icon;
           return (
-            <div key={item.key} className="surface-card px-4 py-4 sm:py-5">
-              <div className="flex items-start justify-between gap-2">
-                <div className="flex items-center gap-1.5">
-                  <span className={cn("h-1.5 w-1.5 rounded-full", item.dot)} />
-                  <span className="text-[10px] font-medium text-slate-400">{item.label}</span>
-                </div>
-                <span className={cn("flex h-8 w-8 items-center justify-center rounded-lg", item.tone)}>
-                  <Icon className="h-4 w-4" aria-hidden="true" />
+            <div key={item.key} className="surface-card px-3 py-4 sm:px-4 sm:py-5">
+              <div className="flex items-center justify-between gap-1.5">
+                <span className="whitespace-nowrap text-[10px] font-medium text-slate-400">
+                  {item.label}
+                </span>
+                <span className={cn("flex h-7 w-7 items-center justify-center rounded-lg sm:h-8 sm:w-8", item.tone)}>
+                  <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden="true" />
                 </span>
               </div>
               <p className="mt-2 text-3xl font-semibold tracking-tight text-ink tabular-nums">
@@ -191,12 +199,16 @@ export default function HomePage() {
                 aria-selected={active}
                 onClick={() => setFilter(tab.key)}
                 className={cn(
-                  "shrink-0 rounded-full px-3 py-1.5 text-[11px] font-medium transition",
+                  "inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-full px-2 py-1.5 text-[10px] font-medium transition sm:gap-1.5 sm:px-3 sm:text-[11px]",
                   active
                     ? "bg-brand-600 text-white"
                     : "text-slate-400 hover:bg-slate-50 hover:text-ink",
                 )}
               >
+                <tab.icon
+                  className={cn("h-3 w-3", active ? "text-white" : tab.tone)}
+                  aria-hidden="true"
+                />
                 {tab.label}
               </button>
             );
@@ -237,7 +249,9 @@ export default function HomePage() {
               <div className="surface-card divide-y divide-line/60 overflow-hidden">
                 {group.tasks.map((task) => {
                   const company = data.companies.find((item) => item.id === task.companyId);
-                  const assignee = data.team.find((item) => item.id === task.assigneeId);
+                  const assignees = data.team.filter((item) =>
+                    task.assigneeIds.includes(item.id),
+                  );
                   const done = task.status === "done";
                   const overdue = isOverdue(task);
                   return (
@@ -257,23 +271,7 @@ export default function HomePage() {
                         done && "opacity-60",
                       )}
                     >
-                      <span
-                        className={cn(
-                          "flex h-4 w-4 shrink-0 items-center justify-center rounded-full border",
-                          done
-                            ? "border-teal-500 bg-teal-500 text-white"
-                            : task.status === "doing"
-                              ? "border-brand-400 bg-brand-50"
-                              : "border-slate-300 bg-white",
-                        )}
-                        aria-hidden="true"
-                      >
-                        {done && (
-                          <svg viewBox="0 0 12 12" className="h-2 w-2" fill="none">
-                            <path d="M2 6.2 4.7 9 10 3.2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
-                        )}
-                      </span>
+                      <TaskStateMenu task={task} />
 
                       <span
                         className={cn(
@@ -311,7 +309,7 @@ export default function HomePage() {
                             {pick(task.title)}
                           </span>
                           {task.blocked && (
-                            <Lock className="h-2.5 w-2.5 shrink-0 text-amber-500" aria-label={t("tasks.blocked")} />
+                            <Pause className="h-2.5 w-2.5 shrink-0 text-amber-500" aria-label={t("tasks.blocked")} />
                           )}
                         </span>
                         <span className="mt-0.5 flex items-center gap-1.5 text-[9px] text-slate-400">
@@ -324,7 +322,7 @@ export default function HomePage() {
                         </span>
                       </span>
 
-                      {assignee && <Avatar name={pick(assignee.name)} color={assignee.accent} size="xs" />}
+                      <AssigneeStack members={assignees} />
                     </div>
                   );
                 })}

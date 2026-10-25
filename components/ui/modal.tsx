@@ -14,6 +14,8 @@ const sizes = {
   full: "max-w-[min(1100px,calc(100vw-2rem))]",
 };
 
+const modalStack: string[] = [];
+
 export type ModalProps = {
   open: boolean;
   onClose: () => void;
@@ -23,6 +25,7 @@ export type ModalProps = {
   footer?: ReactNode;
   headerActions?: ReactNode;
   size?: keyof typeof sizes;
+  zIndex?: number;
   className?: string;
   closeLabel?: string;
 };
@@ -36,41 +39,55 @@ export function Modal({
   footer,
   headerActions,
   size = "md",
+  zIndex = 100,
   className,
   closeLabel = "Close",
 }: ModalProps) {
   const [mounted, setMounted] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
+  const onCloseRef = useRef(onClose);
   const titleId = useId();
   const descriptionId = useId();
 
   useEffect(() => setMounted(true), []);
 
   useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
+
+  useEffect(() => {
     if (!open) return;
+    modalStack.push(titleId);
     const original = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
+      if (event.key === "Escape" && modalStack[modalStack.length - 1] === titleId) {
+        onCloseRef.current();
+      }
     };
     document.addEventListener("keydown", onKeyDown);
     const timer = window.setTimeout(() => {
-      const focusable = panelRef.current?.querySelector<HTMLElement>(
-        "input, textarea, select, button, [href], [tabindex]:not([tabindex='-1'])",
-      );
+      const focusable =
+        panelRef.current?.querySelector<HTMLElement>("[data-autofocus]") ??
+        panelRef.current?.querySelector<HTMLElement>(
+          "input, textarea, select, button, [href], [tabindex]:not([tabindex='-1'])",
+        );
       focusable?.focus();
     }, 30);
     return () => {
       document.body.style.overflow = original;
       document.removeEventListener("keydown", onKeyDown);
+      const stackIndex = modalStack.lastIndexOf(titleId);
+      if (stackIndex >= 0) modalStack.splice(stackIndex, 1);
       window.clearTimeout(timer);
     };
-  }, [open, onClose]);
+  }, [open, titleId]);
 
   if (!mounted || !open) return null;
 
   return createPortal(
     <div
+      style={{ zIndex }}
       className="fixed inset-0 z-[100] flex items-end justify-center bg-brand-950/45 p-0 backdrop-blur-[2px] sm:items-center sm:p-6"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) onClose();

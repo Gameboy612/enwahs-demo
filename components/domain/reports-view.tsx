@@ -83,12 +83,12 @@ export function ReportsView() {
     ];
     const rows = data.tasks.map((task) => {
       const company = data.companies.find((item) => item.id === task.companyId);
-      const assignee = data.team.find((item) => item.id === task.assigneeId);
+      const assignees = data.team.filter((item) => task.assigneeIds.includes(item.id));
       return [
         task.id,
         pick(task.title),
         company ? pick(company.name) : "",
-        assignee ? pick(assignee.name) : "",
+        assignees.map((assignee) => pick(assignee.name)).join(", "),
         t(`status.${task.status}`),
         t(`common.${task.priority}`),
         task.due,

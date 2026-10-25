@@ -56,7 +56,7 @@ export function TeamView() {
   const selectedLoad = selected ? memberLoad(selected, data.tasks) : null;
   const selectedTasks = selected
     ? data.tasks.filter(
-        (task) => task.assigneeId === selected.id && task.status !== "done",
+        (task) => task.assigneeIds.includes(selected.id) && task.status !== "done",
       )
     : [];
 
