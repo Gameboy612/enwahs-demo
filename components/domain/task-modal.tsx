@@ -541,10 +541,10 @@ export function TaskModal({
                         const selected = form.status === option.value;
                         const iconTone =
                           option.value === "doing"
-                            ? "text-brand-600"
+                            ? "text-amber-500"
                             : option.value === "done"
-                              ? "text-teal-600"
-                              : "text-slate-400";
+                              ? "text-green-600"
+                              : "text-orange-500";
                         return (
                           <button
                             key={option.value}

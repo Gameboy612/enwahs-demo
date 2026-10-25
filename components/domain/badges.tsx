@@ -33,9 +33,9 @@ export function TaskStatusBadge({
 }) {
   const { t } = useI18n();
   const map: Record<TaskStatus, { tone: BadgeTone; icon: typeof Circle }> = {
-    todo: { tone: "neutral", icon: ScrollText },
-    doing: { tone: "brand", icon: LoaderCircle },
-    done: { tone: "teal", icon: CircleCheck },
+    todo: { tone: "orange", icon: ScrollText },
+    doing: { tone: "amber", icon: LoaderCircle },
+    done: { tone: "green", icon: CircleCheck },
   };
   const { tone, icon: Icon } = map[status];
   return (

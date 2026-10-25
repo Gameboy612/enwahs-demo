@@ -8,6 +8,8 @@ export type BadgeTone =
   | "gold"
   | "red"
   | "amber"
+  | "orange"
+  | "green"
   | "slate"
   | "outline";
 
@@ -18,6 +20,8 @@ const tones: Record<BadgeTone, string> = {
   gold: "bg-gold-50 text-gold-700 ring-gold-200/70",
   red: "bg-red-50 text-red-700 ring-red-200/70",
   amber: "bg-amber-50 text-amber-700 ring-amber-200/70",
+  orange: "bg-orange-50 text-orange-700 ring-orange-200/70",
+  green: "bg-green-50 text-green-700 ring-green-200/70",
   slate: "bg-slate-700 text-white ring-slate-700",
   outline: "bg-white text-slate-600 ring-line",
 };

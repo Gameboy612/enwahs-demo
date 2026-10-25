@@ -80,18 +80,18 @@ export function TaskStateMenu({
       ? cn(
           "flex h-7 shrink-0 items-center justify-center gap-1 rounded-lg border px-1.5 text-[9px] font-medium transition sm:h-8 sm:w-[88px] sm:justify-between sm:gap-1.5 sm:px-2 sm:text-[10px]",
           task.status === "done"
-            ? "border-teal-200 bg-teal-50 text-teal-600 hover:border-teal-300"
+            ? "border-green-200 bg-green-50 text-green-600 hover:border-green-300"
             : task.status === "doing"
-              ? "border-brand-200 bg-brand-50 text-brand-600 hover:border-brand-300"
-              : "border-line bg-white text-slate-500 hover:border-brand-300 hover:text-ink",
+              ? "border-amber-200 bg-amber-50 text-amber-600 hover:border-amber-300"
+              : "border-orange-200 bg-orange-50 text-orange-600 hover:border-orange-300",
         )
       : cn(
           "flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition",
           task.status === "done"
-            ? "border-teal-500 bg-teal-500 text-white"
+            ? "border-green-500 bg-green-500 text-white"
             : task.status === "doing"
-              ? "border-brand-300 bg-brand-50 text-brand-600"
-              : "border-slate-300 bg-white text-slate-400 hover:border-brand-300",
+              ? "border-amber-300 bg-amber-50 text-amber-600"
+              : "border-orange-300 bg-orange-50 text-orange-500",
         );
 
   return (
@@ -145,10 +145,10 @@ export function TaskStateMenu({
                     className={cn(
                       "h-3.5 w-3.5",
                       status === "doing"
-                        ? "text-brand-600"
+                        ? "text-amber-500"
                         : status === "done"
-                          ? "text-teal-600"
-                          : "text-slate-400",
+                          ? "text-green-600"
+                          : "text-orange-500",
                     )}
                     aria-hidden="true"
                   />

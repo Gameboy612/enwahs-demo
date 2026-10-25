@@ -42,9 +42,9 @@ export default function HomePage() {
 
   const tabs: { key: HomeFilter; label: string; icon: LucideIcon; tone: string }[] = [
     { key: "all", label: t("common.all"), icon: LayoutGrid, tone: "text-slate-400" },
-    { key: "todo", label: t("status.todo"), icon: ScrollText, tone: "text-slate-400" },
-    { key: "doing", label: t("status.doing"), icon: LoaderCircle, tone: "text-brand-600" },
-    { key: "done", label: t("status.done"), icon: CircleCheck, tone: "text-teal-600" },
+    { key: "todo", label: t("status.todo"), icon: ScrollText, tone: "text-orange-500" },
+    { key: "doing", label: t("status.doing"), icon: LoaderCircle, tone: "text-amber-500" },
+    { key: "done", label: t("status.done"), icon: CircleCheck, tone: "text-green-600" },
     { key: "urgent", label: t("tasks.urgent"), icon: TriangleAlert, tone: "text-red-500" },
     { key: "blocked", label: t("tasks.blocked"), icon: Pause, tone: "text-amber-500" },
   ];
@@ -55,21 +55,21 @@ export default function HomePage() {
       label: t("status.todo"),
       value: counts.todo,
       icon: ScrollText,
-      tone: "bg-slate-100 text-slate-400",
+      tone: "bg-orange-50 text-orange-500",
     },
     {
       key: "doing",
       label: t("status.doing"),
       value: counts.doing,
       icon: LoaderCircle,
-      tone: "bg-brand-50 text-brand-600",
+      tone: "bg-amber-50 text-amber-500",
     },
     {
       key: "done",
       label: t("status.done"),
       value: counts.done,
       icon: CircleCheck,
-      tone: "bg-teal-50 text-teal-600",
+      tone: "bg-green-50 text-green-600",
     },
   ];
 
