@@ -32,7 +32,7 @@ type GroupKey = "overdue" | "today" | "tomorrow" | "week" | "later" | "done";
 
 export default function HomePage() {
   const { data } = useDemo();
-  const { t, pick, formatDate, dueLabel, daysFromToday } = useI18n();
+  const { t, pick, formatDate, daysFromToday } = useI18n();
   const [filter, setFilter] = useState<HomeFilter>("all");
   const [search, setSearch] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
@@ -267,35 +267,15 @@ export default function HomePage() {
                         }
                       }}
                       className={cn(
-                        "group flex cursor-pointer items-center gap-2.5 px-3.5 py-2.5 transition hover:bg-slate-50/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand-300/60 sm:gap-3",
+                        "flex cursor-pointer items-center gap-3 px-3.5 py-3 transition hover:bg-slate-50/60",
                         done && "opacity-60",
                       )}
                     >
-                      {company ? (
-                        <span
-                          role="img"
-                          aria-label={pick(company.name)}
-                          title={pick(company.name)}
-                          className="shrink-0"
-                        >
-                          <CompanyMark
-                            company={company}
-                            size="sm"
-                            className="h-7 w-7 rounded-lg text-[10px] sm:h-8 sm:w-8"
-                          />
-                        </span>
-                      ) : (
-                        <span
-                          aria-hidden="true"
-                          className="h-7 w-7 shrink-0 rounded-lg bg-slate-100 sm:h-8 sm:w-8"
-                        />
-                      )}
+                      <TaskStateMenu task={task} />
 
-                      <time
-                        dateTime={task.due}
-                        title={dueLabel(task.due, done)}
+                      <span
                         className={cn(
-                          "flex h-9 w-[52px] shrink-0 items-center justify-center rounded-lg text-[9px] font-medium leading-tight sm:h-10 sm:w-14 sm:text-[10px]",
+                          "flex h-10 w-14 shrink-0 flex-col items-center justify-center rounded-lg text-[8px] font-medium leading-tight",
                           done
                             ? "bg-slate-50 text-slate-400"
                             : overdue
@@ -304,7 +284,19 @@ export default function HomePage() {
                         )}
                       >
                         {formatDate(task.due, "short")}
-                      </time>
+                      </span>
+
+                      <span
+                        className={cn(
+                          "h-1.5 w-1.5 shrink-0 rounded-full",
+                          task.priority === "high"
+                            ? "bg-red-500"
+                            : task.priority === "medium"
+                              ? "bg-gold-500"
+                              : "bg-slate-300",
+                        )}
+                        title={t(`common.${task.priority}`)}
+                      />
 
                       <span className="min-w-0 flex-1">
                         <span className="flex items-center gap-1.5">
@@ -320,11 +312,17 @@ export default function HomePage() {
                             <Pause className="h-2.5 w-2.5 shrink-0 text-amber-500" aria-label={t("tasks.blocked")} />
                           )}
                         </span>
+                        <span className="mt-0.5 flex items-center gap-1.5 text-[9px] text-slate-400">
+                          {company && (
+                            <>
+                              <CompanyMark company={company} size="xs" className="h-3.5 w-3.5 rounded-[4px] text-[6px]" />
+                              <span className="truncate">{pick(company.shortName)}</span>
+                            </>
+                          )}
+                        </span>
                       </span>
 
                       <AssigneeStack members={assignees} />
-
-                      <TaskStateMenu task={task} variant="dropdown" />
                     </div>
                   );
                 })}
