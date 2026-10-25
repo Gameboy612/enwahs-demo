@@ -31,13 +31,19 @@ export default function HomePage() {
     done: data.tasks.filter((task) => task.status === "done").length,
   };
 
-  const tabs: { key: HomeFilter; label: string; count?: number }[] = [
+  const tabs: { key: HomeFilter; label: string }[] = [
     { key: "all", label: t("common.all") },
-    { key: "todo", label: t("status.todo"), count: counts.todo },
-    { key: "doing", label: t("status.doing"), count: counts.doing },
-    { key: "done", label: t("status.done"), count: counts.done },
+    { key: "todo", label: t("status.todo") },
+    { key: "doing", label: t("status.doing") },
+    { key: "done", label: t("status.done") },
     { key: "urgent", label: t("tasks.urgent") },
     { key: "blocked", label: t("tasks.blocked") },
+  ];
+
+  const summary = [
+    { key: "todo", label: t("status.todo"), value: counts.todo, dot: "bg-slate-300" },
+    { key: "doing", label: t("status.doing"), value: counts.doing, dot: "bg-brand-500" },
+    { key: "done", label: t("status.done"), value: counts.done, dot: "bg-teal-500" },
   ];
 
   const tasks = useMemo(() => {
@@ -90,6 +96,20 @@ export default function HomePage() {
         }
       />
 
+      <div className="grid grid-cols-3 gap-2.5">
+        {summary.map((item) => (
+          <div key={item.key} className="surface-card px-4 py-3">
+            <div className="flex items-center gap-1.5">
+              <span className={cn("h-1.5 w-1.5 rounded-full", item.dot)} />
+              <span className="text-[10px] font-medium text-slate-400">{item.label}</span>
+            </div>
+            <p className="mt-1 text-2xl font-semibold tracking-tight text-ink tabular-nums">
+              {item.value}
+            </p>
+          </div>
+        ))}
+      </div>
+
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-1 overflow-x-auto no-scrollbar" role="tablist" aria-label={t("home.title")}>
           {tabs.map((tab) => {
@@ -109,11 +129,6 @@ export default function HomePage() {
                 )}
               >
                 {tab.label}
-                {tab.count !== undefined && (
-                  <span className={cn("text-[9px] tabular-nums", active ? "text-white/70" : "text-slate-400")}>
-                    {tab.count}
-                  </span>
-                )}
               </button>
             );
           })}
