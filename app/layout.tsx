@@ -9,7 +9,7 @@ import { asset } from "@/lib/utils";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://gameboy612.github.io/enwahs-demo",
+    process.env.NEXT_PUBLIC_SITE_URL || "https://wankun.kapakki.com/enwahs-demo",
   ),
   title: {
     default: "Enwahs CRM — Client Operations Workspace",

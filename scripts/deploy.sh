@@ -42,4 +42,4 @@ git push "$REMOTE" "$BRANCH"
 echo
 echo "Deployment triggered."
 echo "Actions: https://github.com/Gameboy612/enwahs-demo/actions"
-echo "Live:    https://gameboy612.github.io/enwahs-demo/"
+echo "Live:    https://wankun.kapakki.com/enwahs-demo/"

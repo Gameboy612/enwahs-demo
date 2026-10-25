@@ -8,7 +8,7 @@ company context and open tasks into one calm workspace. It is a **UI demo**:
 WhatsApp and WeChat are simulated and read-only, there is no backend, and all
 client data is fictional.
 
-[Live demo](https://gameboy612.github.io/enwahs-demo/) · [Repository](https://github.com/Gameboy612/enwahs-demo)
+[Live demo](https://wankun.kapakki.com/enwahs-demo/) · [Repository](https://github.com/Gameboy612/enwahs-demo)
 
 ![Login](docs/screenshots/login.webp)
 
@@ -108,8 +108,9 @@ enwahs-demo/
 
 ## GitHub Pages deployment
 
-The repository is configured for project Pages at
-`https://gameboy612.github.io/enwahs-demo/`.
+The repository is configured for Pages at
+`https://wankun.kapakki.com/enwahs-demo/` (GitHub's
+`https://gameboy612.github.io/enwahs-demo/` redirects to the custom domain).
 
 1. Create the empty GitHub repository `Gameboy612/enwahs-demo` (no README).
 2. Add the remote and push `main`:

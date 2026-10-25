@@ -12,7 +12,7 @@ whenToUse: Use when asked to publish a demo update, deploy the site, fix a GitHu
 |---|---|
 | Repository | `Gameboy612/enwahs-demo` |
 | Default branch | `main` |
-| Live URL | `https://gameboy612.github.io/enwahs-demo/` |
+| Live URL | `https://wankun.kapakki.com/enwahs-demo/` (GitHub Pages custom domain) |
 | Pages base path | `/enwahs-demo` (derived by the workflow) |
 | Workflow | `.github/workflows/deploy.yml` |
 | Local preview | `npm run preview` → `http://localhost:4173` |
@@ -63,7 +63,7 @@ Then:
 1. Open `https://github.com/Gameboy612/enwahs-demo/actions`.
 2. Confirm **Deploy demo to GitHub Pages** is green. The deploy job prints the
    live `page_url`.
-3. Hard-refresh `https://gameboy612.github.io/enwahs-demo/` and verify:
+3. Hard-refresh `https://wankun.kapakki.com/enwahs-demo/` and verify:
    - the Enwahs logo and CSS load (no bare HTML);
    - `/dashboard/`, `/tasks/`, `/companies/`, `/inbox/`, `/reports/`,
      `/team/`, `/settings/` all open;
