@@ -19,7 +19,7 @@ client data is fictional.
 | Area | What you can do |
 |---|---|
 | **Login** (`/`) | One-click demo entry; preview as Partner, CS Team Lead or CS Assistant; EN / 繁中 / 简中 |
-| **Home** (`/dashboard/`) | Todo list with All / Todo / Doing / Done / Urgent / Blocked tabs, counts and search |
+| **Home** (`/dashboard/`) | Todo agenda with All / Todo / Doing / Done / Urgent / Blocked tabs, count cards, date groups and search |
 | **Tasks** (`/tasks/`) | List and kanban board, filters, quick views, create/edit/delete, checklist progress, drag between columns |
 | **Companies** (`/companies/`) | Card and table views, search/filter, add company, health and risk |
 | **Company profile** (`/companies/detail/?id=…`) | Contacts, services, open/completed tasks, notes, edit company |

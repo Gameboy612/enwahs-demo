@@ -395,6 +395,7 @@ const strings = {
 
   "home.title": ["Todo", "待辦", "待办"],
   "home.searchPlaceholder": ["Search todos…", "搜尋待辦…", "搜索待办…"],
+  "home.later": ["Later", "稍後", "稍后"],
   "tasks.title": ["Tasks", "任務", "任务"],
   "tasks.blocked": ["Blocked", "受阻", "受阻"],
   "tasks.urgent": ["Urgent", "緊急", "紧急"],
