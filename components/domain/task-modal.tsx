@@ -279,16 +279,16 @@ export function TaskModal({
       active: "bg-amber-50 text-amber-600",
     },
     {
-      value: "reviewer" as AssigneeRole,
-      label: t("assigneeRole.reviewer"),
-      icon: Eye,
-      active: "bg-brand-50 text-brand-600",
-    },
-    {
       value: "support" as AssigneeRole,
       label: t("assigneeRole.support"),
       icon: Users,
       active: "bg-teal-50 text-teal-600",
+    },
+    {
+      value: "reviewer" as AssigneeRole,
+      label: t("assigneeRole.reviewer"),
+      icon: Eye,
+      active: "bg-brand-50 text-brand-600",
     },
   ];
 
