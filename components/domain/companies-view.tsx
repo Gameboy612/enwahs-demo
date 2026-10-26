@@ -10,9 +10,10 @@ import { PageHeader } from "@/components/ui/page-header";
 import { SegmentedControl } from "@/components/ui/segmented";
 import { CompanyCard, CompanyTable } from "@/components/domain/company-card";
 import { CompanyFormModal } from "@/components/domain/company-form-modal";
+import { useAuth } from "@/lib/auth";
 import { useDemo } from "@/lib/demo-store";
 import { useI18n } from "@/lib/i18n";
-import { isOpen } from "@/lib/selectors";
+import { isOpen, visibleCompanies } from "@/lib/selectors";
 import type { CompanyStatus, RiskLevel, ServiceKey } from "@/lib/types";
 
 type ViewMode = "grid" | "table";
@@ -20,6 +21,7 @@ type ViewMode = "grid" | "table";
 export function CompaniesView() {
   const router = useRouter();
   const { data } = useDemo();
+  const { session } = useAuth();
   const { t, pick } = useI18n();
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<CompanyStatus | "all">("all");
@@ -28,9 +30,15 @@ export function CompaniesView() {
   const [view, setView] = useState<ViewMode>("grid");
   const [modalOpen, setModalOpen] = useState(false);
 
+  const member = data.team.find((person) => person.id === session?.memberId);
+  const accessibleCompanies = useMemo(
+    () => visibleCompanies(data.companies, member),
+    [data.companies, member],
+  );
+
   const filtered = useMemo(() => {
     const query = search.trim().toLowerCase();
-    return data.companies
+    return accessibleCompanies
       .filter((company) => {
         if (status !== "all" && company.status !== status) return false;
         if (service !== "all" && !company.services.includes(service)) return false;
@@ -42,10 +50,13 @@ export function CompaniesView() {
           .includes(query);
       })
       .sort((a, b) => a.healthScore - b.healthScore);
-  }, [data.companies, pick, risk, search, service, status]);
+  }, [accessibleCompanies, pick, risk, search, service, status]);
 
-  const openTaskCount = data.tasks.filter(isOpen).length;
-  const atRisk = data.companies.filter((company) => company.status === "at-risk").length;
+  const accessibleCompanyIds = new Set(accessibleCompanies.map((company) => company.id));
+  const openTaskCount = data.tasks.filter(
+    (task) => isOpen(task) && accessibleCompanyIds.has(task.companyId),
+  ).length;
+  const atRisk = accessibleCompanies.filter((company) => company.status === "at-risk").length;
   const activeFilters =
     Number(search.trim() !== "") +
     Number(status !== "all") +
@@ -85,7 +96,7 @@ export function CompaniesView() {
       />
 
       <p className="text-[10px] text-slate-400">
-        {data.companies.length} {t("companies.title")} · {openTaskCount}{" "}
+        {accessibleCompanies.length} {t("companies.title")} · {openTaskCount}{" "}
         {t("common.openTasks")} · {atRisk} {t("companies.highRisk")}
       </p>
 
@@ -156,7 +167,7 @@ export function CompaniesView() {
           </button>
         )}
         <span className="shrink-0 text-right text-[9px] text-slate-400">
-          {filtered.length}/{data.companies.length}
+          {filtered.length}/{accessibleCompanies.length}
         </span>
       </div>
 

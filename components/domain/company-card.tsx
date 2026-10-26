@@ -1,12 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, ChevronDown } from "lucide-react";
 import { CompanyMark } from "@/components/ui/company-mark";
+import { TaskItem } from "@/components/domain/task-item";
 import { CompanyStatusBadge, ServiceBadge } from "@/components/domain/badges";
 import { useDemo } from "@/lib/demo-store";
 import { useI18n } from "@/lib/i18n";
-import { healthBand, openTasksForCompany } from "@/lib/selectors";
+import { healthBand, openTasksForCompany, sortByDue } from "@/lib/selectors";
 import type { Company } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -17,16 +19,20 @@ const healthTone = {
 };
 
 export function CompanyCard({ company }: { company: Company }) {
+
   const { data } = useDemo();
   const { t, pick } = useI18n();
-  const open = openTasksForCompany(data.tasks, company.id);
+  const open = sortByDue(openTasksForCompany(data.tasks, company.id));
+  const [visible, setVisible] = useState(2);
+  const shown = open.slice(0, visible);
+  const remaining = Math.max(open.length - visible, 0);
 
   return (
-    <Link
-      href={`/companies/detail/?id=${encodeURIComponent(company.id)}`}
-      className="group surface-card flex flex-col p-4 transition hover:border-brand-200"
-    >
-      <div className="flex items-start gap-3">
+    <div className="group surface-card flex h-full flex-col p-4 transition hover:border-brand-200">
+      <Link
+        href={`/companies/detail/?id=${encodeURIComponent(company.id)}`}
+        className="flex items-start gap-3"
+      >
         <CompanyMark company={company} size="lg" />
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-2">
@@ -42,12 +48,47 @@ export function CompanyCard({ company }: { company: Company }) {
             <CompanyStatusBadge status={company.status} />
           </div>
         </div>
-      </div>
+      </Link>
 
       <div className="mt-3 flex flex-wrap gap-1">
         {company.services.slice(0, 2).map((service) => (
           <ServiceBadge key={service} service={service} />
         ))}
+      </div>
+
+      <div className="mt-3 border-t border-line/60 pt-2.5">
+        <div className="mb-1 flex items-center justify-between gap-2">
+          <span className="text-[9px] font-medium uppercase tracking-wide text-slate-400">
+            {t("companies.pendingTasks")}
+          </span>
+          <span className="text-[9px] tabular-nums text-slate-400">{open.length}</span>
+        </div>
+        {open.length === 0 ? (
+          <p className="py-2 text-[9px] text-slate-400">{t("companies.noPendingTasks")}</p>
+        ) : (
+          <div className="space-y-1">
+            {shown.map((task) => (
+              <TaskItem
+                key={task.id}
+                task={task}
+                variant="compact"
+                showCompany={false}
+                href={`/tasks/?task=${encodeURIComponent(task.id)}`}
+              />
+            ))}
+            {remaining > 0 && (
+              <button
+                type="button"
+                onClick={() => setVisible((value) => value + 5)}
+                aria-expanded={visible > 2}
+                className="mt-1 inline-flex items-center gap-1 rounded-md px-1 py-1 text-[9px] font-medium text-brand-600 transition hover:bg-brand-50 hover:text-brand-800"
+              >
+                <ChevronDown className="h-3 w-3" aria-hidden="true" />
+                +{Math.min(remaining, 5)} {t("common.more")}
+              </button>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="mt-3 flex items-center justify-between gap-3 border-t border-line/60 pt-3">
@@ -64,7 +105,7 @@ export function CompanyCard({ company }: { company: Company }) {
           <span className="text-[9px] tabular-nums text-slate-400">{company.healthScore}</span>
         </span>
       </div>
-    </Link>
+    </div>
   );
 }
 

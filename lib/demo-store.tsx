@@ -58,6 +58,7 @@ export type CompanyDraft = {
   status: CompanyStatus;
   risk: RiskLevel;
   services: ServiceKey[];
+  ownerId?: string;
   contactName: Localized;
   contactTitle: Localized;
   contactEmail: string;
@@ -123,7 +124,14 @@ function normalizeDemoData(input: DemoData): DemoData {
       return { ...extracted, assigneeIds };
     }),
   }));
-  return { ...input, tasks, threads };
+  const companies = input.companies.map((company) => ({
+    ...company,
+    ownerId:
+      company.ownerId ??
+      seedData.companies.find((item) => item.id === company.id)?.ownerId ??
+      "carlos",
+  }));
+  return { ...input, companies, tasks, threads };
 }
 
 function isDemoData(value: unknown): value is DemoData {
@@ -261,6 +269,7 @@ export function DemoProvider({ children }: { children: ReactNode }) {
       status: draft.status,
       risk: draft.risk,
       services: draft.services,
+      ownerId: draft.ownerId ?? "carlos",
       contact: {
         name: draft.contactName,
         title: draft.contactTitle,

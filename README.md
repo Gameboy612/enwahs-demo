@@ -23,13 +23,13 @@ client data is fictional.
 | Area | What you can do |
 |---|---|
 | **Login** (`/`) | One-click demo entry; preview as Partner, CS Team Lead or CS Assistant; EN / 繁中 / 简中 |
-| **Home** (`/dashboard/`) | Todo agenda with icon filters, count cards, inline state dropdowns, date groups and search |
-| **Tasks** (`/tasks/`) | Board-first task screen with a date-grouped List view, filters, quick views, create/edit/delete, multiple assignees with icon roles, checklist progress, drag between columns |
-| **Companies** (`/companies/`) | Card and table views, search/filter, add company, health and risk |
+| **Home** (`/dashboard/`) | Date header, horizontally scrolling company deadline cards, todo agenda, icon filters and search |
+| **Tasks** (`/tasks/`) | Board-first task screen with status counts, date-grouped List view, filters, create/edit/delete, multiple assignees with icon roles, checklist progress, drag between columns |
+| **Companies** (`/companies/`) | Owner-scoped card and table views, pending tasks with expandable lists, search/filter, add company, health and risk |
 | **Company profile** (`/companies/detail/?id=…`) | Contacts, services, open/completed tasks, notes, edit company |
 | **Inbox** (`/inbox/`) | Simulated WhatsApp/WeChat threads, AI summary, extracted tasks, one-click task creation, read-only composer |
 | **Reports** (`/reports/`) | Throughput, channel mix, volume trend, client health, team workload, CSV export |
-| **Team** (`/team/`) | Directory, capacity, workload, assigned tasks, member detail |
+| **Team** (`/team/`) | Directory, capacity, workload, assigned tasks on cards, member detail |
 | **Settings** (`/settings/`) | Profile, language, notification preferences, JSON export, reset demo data |
 
 The interface is fully trilingual: **English**, **繁體中文** (default) and

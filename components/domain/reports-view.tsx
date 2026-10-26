@@ -10,14 +10,12 @@ import {
   Timer,
   TrendingUp,
 } from "lucide-react";
-import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   DonutChart,
   DonutLegend,
   GroupedBarChart,
-  HorizontalBar,
   StackedBarChart,
 } from "@/components/ui/charts";
 import { PageHeader } from "@/components/ui/page-header";
@@ -30,11 +28,8 @@ import {
   averageResponse,
   healthBand,
   isOpen,
-  memberLoad,
-  openTasks,
 } from "@/lib/selectors";
 import { useToast } from "@/components/ui/toast";
-import { cn } from "@/lib/utils";
 
 type Range = "last30" | "quarter";
 
@@ -51,7 +46,6 @@ export function ReportsView() {
   const rangeThroughput =
     range === "last30" ? taskThroughput.slice(-1) : taskThroughput.slice(-3);
   const current = monthlyVolume[monthlyVolume.length - 1];
-  const open = openTasks(data.tasks);
   const avgResponse = averageResponse(data.threads);
   const completed = rangeThroughput.reduce((total, point) => total + point.completed, 0);
   const created = rangeThroughput.reduce((total, point) => total + point.created, 0);
@@ -67,9 +61,6 @@ export function ReportsView() {
     );
   }, [data.companies]);
 
-  const workload = data.team
-    .map((member) => ({ member, load: memberLoad(member, data.tasks) }))
-    .sort((a, b) => b.load.utilization - a.load.utilization);
   const exportReport = () => {
     const header = [
       "ID",
@@ -289,115 +280,6 @@ export function ReportsView() {
               />
             </div>
           </CardContent>
-        </Card>
-      </div>
-
-      <div className="grid gap-4 xl:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <div>
-              <h3 className="text-[13px] font-semibold text-ink">
-                {t("reports.teamWorkload")}
-              </h3>
-            </div>
-            <span className="text-[10px] text-slate-400">
-              {open.length} {t("common.openTasks")}
-            </span>
-          </CardHeader>
-          <CardContent className="space-y-3.5 pt-4">
-            {workload.map(({ member, load }) => (
-              <div key={member.id}>
-                <div className="mb-1.5 flex items-center justify-between gap-2">
-                  <span className="inline-flex items-center gap-2 text-[11px] font-medium text-slate-600">
-                    <Avatar name={pick(member.name)} color={member.accent} size="xs" />
-                    {pick(member.name)}
-                  </span>
-                  <span className="text-[10px] text-slate-400">
-                    {load.weightedHours}h / {member.capacityHours}h
-                  </span>
-                </div>
-                <HorizontalBar
-                  label=""
-                  value={load.utilization}
-                  max={100}
-                  color={
-                    load.utilization > 100
-                      ? "#dc2626"
-                      : load.utilization > 80
-                        ? "#c9a227"
-                        : "#159895"
-                  }
-                  suffix="%"
-                />
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <div>
-              <h3 className="text-[13px] font-semibold text-ink">
-                {t("reports.teamPerformance")}
-              </h3>
-              <p className="mt-0.5 text-[10px] text-slate-400">{t("team.capacityHint")}</p>
-            </div>
-          </CardHeader>
-          <div className="overflow-x-auto scrollbar-thin">
-            <table className="w-full min-w-[520px] text-left">
-              <thead>
-                <tr className="border-y border-line bg-slate-50/60 text-[9px] font-semibold uppercase tracking-[0.1em] text-slate-400">
-                  <th className="px-5 py-2.5">{t("common.team")}</th>
-                  <th className="px-3 py-2.5 text-center">{t("common.openTasks")}</th>
-                  <th className="px-3 py-2.5">{t("reports.utilization")}</th>
-                  <th className="px-5 py-2.5 text-right">{t("common.capacity")}</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-line/70">
-                {workload.map(({ member, load }) => (
-                  <tr key={member.id} className="hover:bg-slate-50/60">
-                    <td className="px-5 py-2.5">
-                      <div className="flex items-center gap-2">
-                        <Avatar name={pick(member.name)} color={member.accent} size="xs" />
-                        <div className="min-w-0">
-                          <p className="truncate text-[11px] font-medium text-ink">
-                            {pick(member.name)}
-                          </p>
-                          <p className="truncate text-[9px] text-slate-400">
-                            {pick(member.title)}
-                          </p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-3 py-2.5 text-center text-[11px] font-semibold tabular-nums text-ink">
-                      {load.assigned.length}
-                    </td>
-                    <td className="px-3 py-2.5">
-                      <div className="flex items-center gap-2">
-                        <div className="h-1.5 w-16 overflow-hidden rounded-full bg-slate-100">
-                          <div
-                            className={cn(
-                              "h-full rounded-full",
-                              load.utilization > 100
-                                ? "bg-red-500"
-                                : load.utilization > 80
-                                  ? "bg-gold-500"
-                                  : "bg-teal-500",
-                            )}
-                            style={{ width: `${Math.min(load.utilization, 100)}%` }}
-                          />
-                        </div>
-                        <span className="text-[10px] text-slate-500">{load.utilization}%</span>
-                      </div>
-                    </td>
-                    <td className="px-5 py-2.5 text-right text-[10px] text-slate-400">
-                      {member.capacityHours} {t("common.hours")}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
         </Card>
       </div>
 

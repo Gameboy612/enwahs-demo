@@ -1,25 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { Menu, Search } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { LanguageSwitcher } from "@/components/ui/language-switcher";
 import { Logo } from "@/components/ui/logo";
 import { useAuth } from "@/lib/auth";
 import { useDemo } from "@/lib/demo-store";
-import { useI18n, type TranslationKey } from "@/lib/i18n";
+import { useI18n } from "@/lib/i18n";
 import { NotificationsMenu } from "@/components/layout/notifications-menu";
 
-const pageKeys: Record<string, TranslationKey> = {
-  "/dashboard": "home.title",
-  "/tasks": "nav.tasks",
-  "/companies": "nav.companies",
-  "/inbox": "nav.inbox",
-  "/reports": "nav.reports",
-  "/team": "nav.team",
-  "/settings": "nav.settings",
-};
+
 
 export function Topbar({
   onOpenMenu,
@@ -28,14 +19,10 @@ export function Topbar({
   onOpenMenu: () => void;
   onOpenCommand: () => void;
 }) {
-  const pathname = usePathname();
   const { session } = useAuth();
   const { data } = useDemo();
   const { t, pick } = useI18n();
   const member = data.team.find((person) => person.id === session?.memberId) ?? data.team[0];
-
-  const root = `/${pathname.split("/").filter(Boolean)[0] ?? ""}`;
-  const pageKey = pageKeys[root] ?? "nav.dashboard";
 
   return (
     <header className="sticky top-0 z-30 border-b border-line/70 bg-surface/90 backdrop-blur-xl">
@@ -53,16 +40,12 @@ export function Topbar({
           <Logo size="sm" showText={false} />
         </Link>
 
-        <h1 className="hidden text-[13px] font-semibold tracking-tight text-ink lg:block">
-          {t(pageKey)}
-        </h1>
-
         <div className="flex-1" />
 
         <button
           type="button"
           onClick={onOpenCommand}
-          className="hidden h-8 items-center gap-2 rounded-lg border border-line bg-white px-2.5 text-[11px] text-slate-400 transition hover:border-brand-200 hover:text-slate-600 sm:flex"
+          className="hidden h-9 w-52 items-center gap-2 rounded-lg border border-line bg-white px-3 text-xs text-slate-400 transition hover:border-brand-200 hover:text-slate-600 sm:flex lg:w-64"
         >
           <Search className="h-3.5 w-3.5" aria-hidden="true" />
           <span className="hidden md:inline">{t("common.search")}</span>

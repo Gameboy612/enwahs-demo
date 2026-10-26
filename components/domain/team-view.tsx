@@ -135,6 +135,40 @@ export function TeamView() {
                     style={{ width: `${Math.min(load.utilization, 100)}%` }}
                   />
                 </div>
+                <div className="mt-3 border-t border-line/60 pt-2.5">
+                  <p className="text-[8px] font-medium uppercase tracking-wide text-slate-400">
+                    {t("team.assignedTasks")}
+                  </p>
+                  {load.assigned.length === 0 ? (
+                    <p className="mt-1.5 text-[9px] text-slate-400">
+                      {t("team.noOpenTasks")}
+                    </p>
+                  ) : (
+                    <div className="mt-1.5 space-y-1">
+                      {load.assigned.slice(0, 3).map((task) => (
+                        <p
+                          key={task.id}
+                          className="flex items-center gap-1.5 text-[9px] text-slate-500"
+                        >
+                          <span
+                            className={cn(
+                              "h-1.5 w-1.5 shrink-0 rounded-full",
+                              task.status === "doing"
+                                ? "bg-amber-400"
+                                : "bg-orange-400",
+                            )}
+                          />
+                          <span className="truncate">{pick(task.title)}</span>
+                        </p>
+                      ))}
+                      {load.assigned.length > 3 && (
+                        <p className="text-[8px] text-slate-400">
+                          +{load.assigned.length - 3} {t("common.more")}
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </div>
               </button>
             );
           })}

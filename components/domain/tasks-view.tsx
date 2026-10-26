@@ -14,7 +14,9 @@ import {
   type TaskFiltersState,
 } from "@/components/domain/task-filters";
 import { TaskAgenda } from "@/components/domain/task-agenda";
+import { TaskCounts } from "@/components/domain/task-counts";
 import { TaskModal } from "@/components/domain/task-modal";
+import { DEMO_TODAY } from "@/lib/constants";
 import { useDemo } from "@/lib/demo-store";
 import { useI18n } from "@/lib/i18n";
 import { isDueToday, isOverdue, openTasks } from "@/lib/selectors";
@@ -79,8 +81,9 @@ export function TasksView() {
         return true;
       })
       .sort((a, b) => {
-        if (a.status === "done" && b.status !== "done") return 1;
-        if (b.status === "done" && a.status !== "done") return -1;
+        const aPastDone = a.status === "done" && a.due < DEMO_TODAY;
+        const bPastDone = b.status === "done" && b.due < DEMO_TODAY;
+        if (aPastDone !== bPastDone) return aPastDone ? 1 : -1;
         if (a.due !== b.due) return a.due.localeCompare(b.due);
         const priority = { high: 0, medium: 1, low: 2 };
         return priority[a.priority] - priority[b.priority];
@@ -118,6 +121,8 @@ export function TasksView() {
           </>
         }
       />
+
+      <TaskCounts />
 
       <p className="text-[10px] text-slate-400">
         {open.length} {t("common.openTasks")} · {dueToday} {t("common.today")} ·{" "}

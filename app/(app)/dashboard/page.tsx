@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import {
   CircleCheck,
   CheckSquare,
@@ -14,31 +15,28 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { CompanyCard } from "@/components/domain/company-card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Input } from "@/components/ui/input";
 import { TaskAgenda } from "@/components/domain/task-agenda";
 import { TaskModal } from "@/components/domain/task-modal";
 import { DEMO_TODAY } from "@/lib/constants";
+import { useAuth } from "@/lib/auth";
 import { useDemo } from "@/lib/demo-store";
 import { useI18n } from "@/lib/i18n";
-import { isOverdue } from "@/lib/selectors";
+import { isOverdue, nextDeadline, visibleCompanies } from "@/lib/selectors";
 import type { Task } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 type HomeFilter = "all" | "todo" | "doing" | "done" | "urgent" | "blocked";
 export default function HomePage() {
   const { data } = useDemo();
+  const { session } = useAuth();
   const { t, pick, formatDate } = useI18n();
   const [filter, setFilter] = useState<HomeFilter>("all");
   const [search, setSearch] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
-
-  const counts = {
-    todo: data.tasks.filter((task) => task.status === "todo").length,
-    doing: data.tasks.filter((task) => task.status === "doing").length,
-    done: data.tasks.filter((task) => task.status === "done").length,
-  };
 
   const tabs: { key: HomeFilter; label: string; icon: LucideIcon; tone: string }[] = [
     { key: "all", label: t("common.all"), icon: LayoutGrid, tone: "text-slate-400" },
@@ -49,33 +47,32 @@ export default function HomePage() {
     { key: "blocked", label: t("tasks.blocked"), icon: Pause, tone: "text-amber-500" },
   ];
 
-  const summary = [
-    {
-      key: "todo",
-      label: t("status.todo"),
-      value: counts.todo,
-      icon: ScrollText,
-      tone: "bg-orange-50 text-orange-500",
-    },
-    {
-      key: "doing",
-      label: t("status.doing"),
-      value: counts.doing,
-      icon: LoaderCircle,
-      tone: "bg-amber-50 text-amber-500",
-    },
-    {
-      key: "done",
-      label: t("status.done"),
-      value: counts.done,
-      icon: CircleCheck,
-      tone: "bg-green-50 text-green-600",
-    },
-  ];
+  const member = data.team.find((person) => person.id === session?.memberId);
+  const companies = useMemo(
+    () => visibleCompanies(data.companies, member),
+    [data.companies, member],
+  );
+  const companyCards = useMemo(
+    () =>
+      companies
+        .map((company) => ({ company, next: nextDeadline(data.tasks, company.id) }))
+        .sort((a, b) => {
+          if (!a.next && !b.next) return 0;
+          if (!a.next) return 1;
+          if (!b.next) return -1;
+          return a.next.due.localeCompare(b.next.due);
+        }),
+    [companies, data.tasks],
+  );
+  const accessibleCompanyIds = useMemo(
+    () => new Set(companies.map((company) => company.id)),
+    [companies],
+  );
 
   const tasks = useMemo(() => {
     const query = search.trim().toLowerCase();
     return data.tasks
+      .filter((task) => accessibleCompanyIds.has(task.companyId))
       .filter((task) => {
         if (filter === "todo") return task.status === "todo";
         if (filter === "doing") return task.status === "doing";
@@ -98,7 +95,7 @@ export default function HomePage() {
           .includes(query);
       })
       .sort((a, b) => a.due.localeCompare(b.due));
-  }, [data.companies, data.team, data.tasks, filter, pick, search]);
+  }, [accessibleCompanyIds, data.companies, data.team, data.tasks, filter, pick, search]);
 
   const openTask = (task: Task) => {
     setEditingTask(task);
@@ -113,14 +110,9 @@ export default function HomePage() {
   return (
     <div className="mx-auto w-full max-w-3xl space-y-5">
       <div className="flex items-start justify-between gap-4">
-        <div className="min-w-0">
-          <h1 className="text-2xl font-semibold tracking-tight text-ink">
-            {t("home.title")}
-          </h1>
-          <p className="mt-1 text-[10px] text-slate-400">
-            {formatDate(DEMO_TODAY, "long")}
-          </p>
-        </div>
+        <h1 className="text-2xl font-semibold tracking-tight text-ink">
+          {formatDate(DEMO_TODAY, "long")}
+        </h1>
         <Button
           onClick={createTask}
           leftIcon={<Plus className="h-4 w-4" />}
@@ -130,26 +122,37 @@ export default function HomePage() {
         </Button>
       </div>
 
-      <div className="grid grid-cols-3 gap-2.5">
-        {summary.map((item) => {
-          const Icon = item.icon;
-          return (
-            <div key={item.key} className="surface-card px-3 py-4 sm:px-4 sm:py-5">
-              <div className="flex items-center justify-between gap-1.5">
-                <span className="whitespace-nowrap text-[10px] font-medium text-slate-400">
-                  {item.label}
-                </span>
-                <span className={cn("flex h-7 w-7 items-center justify-center rounded-lg sm:h-8 sm:w-8", item.tone)}>
-                  <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden="true" />
-                </span>
-              </div>
-              <p className="mt-2 text-3xl font-semibold tracking-tight text-ink tabular-nums">
-                {item.value}
-              </p>
+      <section>
+        <div className="mb-2 flex items-center justify-between gap-2 px-1">
+          <h2 className="text-[9px] font-medium uppercase tracking-[0.12em] text-slate-400">
+            {t("home.companyTracker")}
+          </h2>
+          <Link
+            href="/companies/"
+            className="text-[9px] font-medium text-brand-600 transition hover:text-brand-800"
+          >
+            {t("home.viewAllCompanies")}
+          </Link>
+        </div>
+        {companyCards.length === 0 ? (
+          <p className="surface-card px-3 py-4 text-[10px] text-slate-400">
+            {t("companies.empty")}
+          </p>
+        ) : (
+          <div className="-mx-4 overflow-x-auto px-4 pb-2 scrollbar-thin sm:mx-0 sm:px-0">
+            <div className="flex w-max snap-x snap-mandatory gap-3">
+              {companyCards.map(({ company }) => (
+                <div
+                  key={company.id}
+                  className="w-[78vw] max-w-[300px] shrink-0 snap-start sm:w-[300px]"
+                >
+                  <CompanyCard company={company} />
+                </div>
+              ))}
             </div>
-          );
-        })}
-      </div>
+          </div>
+        )}
+      </section>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div
@@ -189,8 +192,8 @@ export default function HomePage() {
           placeholder={t("home.searchPlaceholder")}
           leftIcon={<Search className="h-3.5 w-3.5" />}
           aria-label={t("common.search")}
-          containerClassName="sm:w-56"
-          className="h-8 bg-white text-[11px]"
+          containerClassName="sm:w-72"
+          className="h-9 bg-white text-[11px]"
         />
       </div>
 

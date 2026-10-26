@@ -118,6 +118,7 @@ export const team: TeamMember[] = [
 export const companies: Company[] = [
   {
     id: "harbourview",
+    ownerId: "michelle",
     name: L(
       "Harbourview Logistics Ltd.",
       "海景物流有限公司",
@@ -183,6 +184,7 @@ export const companies: Company[] = [
   },
   {
     id: "silvercord",
+    ownerId: "emily",
     name: L("Silvercord Garments Ltd.", "銀線製衣有限公司", "银线制衣有限公司"),
     shortName: L("Silvercord", "銀線製衣", "银线制衣"),
     industry: L("Apparel manufacturing", "製衣製造", "制衣制造"),
@@ -232,6 +234,7 @@ export const companies: Company[] = [
   },
   {
     id: "peak-capital",
+    ownerId: "sophia",
     name: L(
       "Peak Capital Advisory Ltd.",
       "峰匯資本顧問有限公司",
@@ -286,6 +289,7 @@ export const companies: Company[] = [
   },
   {
     id: "golden-harbour",
+    ownerId: "jason",
     name: L(
       "Golden Harbour Seafood Trading",
       "金港海鮮貿易",
@@ -350,6 +354,7 @@ export const companies: Company[] = [
   },
   {
     id: "meridian",
+    ownerId: "carlos",
     name: L(
       "Meridian Property Holdings",
       "子午物業控股",
@@ -403,6 +408,7 @@ export const companies: Company[] = [
   },
   {
     id: "novatech",
+    ownerId: "jason",
     name: L(
       "NovaTech Solutions (HK) Ltd.",
       "新科技方案（香港）有限公司",
@@ -457,6 +463,7 @@ export const companies: Company[] = [
   },
   {
     id: "csw-printing",
+    ownerId: "kevin",
     name: L(
       "Cheung Sha Wan Printing Co.",
       "長沙灣印刷有限公司",
@@ -510,6 +517,7 @@ export const companies: Company[] = [
   },
   {
     id: "blue-bay",
+    ownerId: "anna",
     name: L("Blue Bay Education Group", "藍灣教育集團", "蓝湾教育集团"),
     shortName: L("Blue Bay", "藍灣教育", "蓝湾教育"),
     industry: L("Education", "教育", "教育"),
@@ -559,6 +567,7 @@ export const companies: Company[] = [
   },
   {
     id: "orient-pearl",
+    ownerId: "ryan",
     name: L("Orient Pearl Restaurants Ltd.", "東方明珠餐飲有限公司", "东方明珠餐饮有限公司"),
     shortName: L("Orient Pearl", "東方明珠", "东方明珠"),
     industry: L("Food & beverage", "餐飲", "餐饮"),
@@ -618,6 +627,7 @@ export const companies: Company[] = [
   },
   {
     id: "grand-rise",
+    ownerId: "michelle",
     name: L("Grand Rise Engineering Ltd.", "駿昇工程有限公司", "骏昇工程有限公司"),
     shortName: L("Grand Rise", "駿昇工程", "骏昇工程"),
     industry: L("Construction & engineering", "建築及工程", "建筑及工程"),
@@ -941,7 +951,7 @@ export const tasks: Task[] = [
     assigneeIds: ["jason"],
     status: "done",
     priority: "medium",
-    due: "2026-10-23",
+    due: "2026-10-26",
     channel: "internal",
     createdAt: "2026-10-20T09:30:00+08:00",
     tags: [L("Billing", "帳務", "账务")],
@@ -1119,6 +1129,75 @@ export const tasks: Task[] = [
       { id: "c29", label: L("Platform fees", "平台費用", "平台费用"), done: false },
     ],
     sourceThreadId: "th-orient",
+  },
+  {
+    id: "t19",
+    title: L(
+      "Prepare audit planning memo — Harbourview",
+      "編製審計計劃備忘 — 海景物流",
+      "编制审计计划备忘 — 海景物流",
+    ),
+    description: L(
+      "Draft the planning memo for the 2025/26 audit, including key risks and the proposed timetable.",
+      "為 2025/26 審計起草計劃備忘，包括主要風險及建議時間表。",
+      "为 2025/26 审计起草计划备忘，包括主要风险及建议时间表。",
+    ),
+    companyId: "harbourview",
+    assigneeIds: ["jason"],
+    assigneeRoles: { jason: "lead" },
+    status: "todo",
+    priority: "medium",
+    due: "2026-10-29",
+    channel: "email",
+    createdAt: "2026-10-26T09:40:00+08:00",
+    tags: [L("Audit", "審計", "审计"), L("Planning", "計劃", "计划")],
+    checklist: [],
+  },
+  {
+    id: "t20",
+    title: L(
+      "Send October payroll summary — Harbourview",
+      "發送 10 月薪酬摘要 — 海景物流",
+      "发送 10 月薪酬摘要 — 海景物流",
+    ),
+    description: L(
+      "Confirm the October payroll totals and send the summary to the client for approval.",
+      "確認 10 月薪酬總額，並將摘要發送客戶審批。",
+      "确认 10 月薪酬总额，并将摘要发送客户审批。",
+    ),
+    companyId: "harbourview",
+    assigneeIds: ["michelle"],
+    assigneeRoles: { michelle: "lead" },
+    status: "todo",
+    priority: "low",
+    due: "2026-10-30",
+    channel: "internal",
+    createdAt: "2026-10-26T10:10:00+08:00",
+    tags: [L("Payroll", "薪酬", "薪酬")],
+    checklist: [],
+  },
+  {
+    id: "t21",
+    title: L(
+      "Confirm MPF enrolment — Harbourview",
+      "確認強積金登記 — 海景物流",
+      "确认强积金登记 — 海景物流",
+    ),
+    description: L(
+      "Check the enrolment status for the new operations hire and confirm the effective date.",
+      "核對新入職營運人員的登記狀態，並確認生效日期。",
+      "核对新入职运营人员的登记状态，并确认生效日期。",
+    ),
+    companyId: "harbourview",
+    assigneeIds: ["ryan"],
+    assigneeRoles: { ryan: "lead" },
+    status: "todo",
+    priority: "medium",
+    due: "2026-11-02",
+    channel: "whatsapp",
+    createdAt: "2026-10-26T10:30:00+08:00",
+    tags: [L("Payroll", "薪酬", "薪酬"), L("Compliance", "合規", "合规")],
+    checklist: [],
   },
 ];
 

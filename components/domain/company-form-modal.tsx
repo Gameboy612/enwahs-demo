@@ -5,6 +5,7 @@ import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input, Select, Textarea } from "@/components/ui/input";
 import { Modal } from "@/components/ui/modal";
+import { useAuth } from "@/lib/auth";
 import { useDemo, type CompanyDraft } from "@/lib/demo-store";
 import { useI18n } from "@/lib/i18n";
 import type {
@@ -81,6 +82,7 @@ export function CompanyFormModal({
   onCreated?: (company: Company) => void;
 }) {
   const { addCompany, updateCompany } = useDemo();
+  const { session } = useAuth();
   const { t, pick } = useI18n();
   const { toast } = useToast();
   const [form, setForm] = useState<FormState>(emptyForm);
@@ -180,6 +182,7 @@ export function CompanyFormModal({
         status: form.status,
         risk: form.risk,
         services: form.services,
+        ownerId: session?.memberId,
         contactName: toLocalized(form.contactName.trim()),
         contactTitle: toLocalized(form.contactTitle.trim()),
         contactEmail: form.contactEmail,

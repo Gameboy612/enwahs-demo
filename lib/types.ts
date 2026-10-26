@@ -60,6 +60,7 @@ export type Company = {
   status: CompanyStatus;
   risk: RiskLevel;
   services: ServiceKey[];
+  ownerId: string;
   contact: Contact;
   phone: string;
   email: string;

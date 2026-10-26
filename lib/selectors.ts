@@ -159,6 +159,14 @@ export function memberById(team: TeamMember[], id: string): TeamMember | undefin
   return team.find((member) => member.id === id);
 }
 
+export function visibleCompanies(
+  companies: Company[],
+  member: TeamMember | undefined,
+): Company[] {
+  if (!member || member.role === "partner") return companies;
+  return companies.filter((company) => company.ownerId === member.id);
+}
+
 export function visibleTaskForCompany(tasks: Task[], companyId: string) {
   const companyTasks = tasksForCompany(tasks, companyId);
   return {

@@ -42,6 +42,7 @@ import { useToast } from "@/components/ui/toast";
 import {
   healthBand,
   nextDeadline,
+  visibleCompanies,
   visibleTaskForCompany,
 } from "@/lib/selectors";
 import type { Task } from "@/lib/types";
@@ -70,6 +71,9 @@ export function CompanyDetailView() {
   const [note, setNote] = useState("");
 
   const member = data.team.find((person) => person.id === session?.memberId) ?? data.team[0];
+  const canAccessCompany = company
+    ? visibleCompanies([company], member).length > 0
+    : false;
   const companyTasks = company
     ? visibleTaskForCompany(data.tasks, company.id)
     : { open: [], done: [], all: [] };
@@ -84,7 +88,7 @@ export function CompanyDetailView() {
     );
   }
 
-  if (!company) {
+  if (!company || !canAccessCompany) {
     return (
       <EmptyState
         icon={<Building2 className="h-5 w-5" />}
