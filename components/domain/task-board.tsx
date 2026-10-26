@@ -9,9 +9,9 @@ import type { Task, TaskStatus } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 const columnTone: Record<TaskStatus, string> = {
-  todo: "bg-slate-300",
-  doing: "bg-brand-500",
-  done: "bg-teal-500",
+  todo: "bg-orange-400",
+  doing: "bg-amber-400",
+  done: "bg-green-500",
 };
 
 export function TaskBoard({
@@ -31,7 +31,8 @@ export function TaskBoard({
   const columns: TaskStatus[] = ["todo", "doing", "done"];
 
   return (
-    <div className="grid gap-3 md:grid-cols-3">
+    <div className="overflow-x-auto pb-3 scrollbar-thin md:overflow-visible">
+      <div className="flex w-max snap-x snap-mandatory gap-3 md:grid md:w-auto md:grid-cols-3 md:snap-none">
       {columns.map((status) => {
         const list = tasks.filter((task) => task.status === status);
         return (
@@ -52,7 +53,7 @@ export function TaskBoard({
               setOver(null);
             }}
             className={cn(
-              "flex min-h-[300px] flex-col rounded-xl border border-line bg-slate-50/50 p-2",
+              "flex min-h-[300px] w-[78vw] max-w-[300px] shrink-0 snap-start flex-col rounded-xl border border-line bg-slate-50/50 p-2 md:w-auto md:max-w-none",
               over === status && "border-brand-300 bg-brand-50/40",
             )}
           >
@@ -99,6 +100,7 @@ export function TaskBoard({
           </div>
         );
       })}
+      </div>
     </div>
   );
 }
