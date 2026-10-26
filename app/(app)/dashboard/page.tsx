@@ -123,10 +123,7 @@ export default function HomePage() {
       </div>
 
       <section>
-        <div className="mb-2 flex items-center justify-between gap-2 px-1">
-          <h2 className="text-[9px] font-medium uppercase tracking-[0.12em] text-slate-400">
-            {t("home.companyTracker")}
-          </h2>
+        <div className="mb-2 flex items-center justify-end gap-2 px-1">
           <Link
             href="/companies/"
             className="text-[9px] font-medium text-brand-600 transition hover:text-brand-800"
