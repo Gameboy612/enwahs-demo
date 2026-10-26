@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown, Languages } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { LANGUAGE_OPTIONS, useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
@@ -23,21 +23,14 @@ export function LanguageSwitcher({
         className,
       )}
     >
-      <Languages
-        className={cn(
-          "pointer-events-none absolute left-2 h-3.5 w-3.5",
-          dark ? "text-white/50" : "text-slate-400",
-        )}
-        aria-hidden="true"
-      />
       <select
         value={lang}
         onChange={(event) => setLang(event.target.value as typeof lang)}
         aria-label={t("login.language")}
         title={LANGUAGE_OPTIONS.find((option) => option.code === lang)?.label}
         className={cn(
-          "h-8 cursor-pointer appearance-none rounded-xl bg-transparent pl-7 text-center text-[11px] font-semibold outline-none transition focus-visible:ring-2 focus-visible:ring-brand-300",
-          compact ? "w-[58px] pr-5" : "w-[120px] pr-7",
+          "h-8 cursor-pointer appearance-none rounded-xl bg-transparent pl-2 text-center text-[11px] font-semibold outline-none transition focus-visible:ring-2 focus-visible:ring-brand-300",
+          compact ? "w-[46px] pr-4" : "w-[120px] pr-7",
           dark ? "text-white" : "text-slate-600",
         )}
       >
