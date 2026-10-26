@@ -14,7 +14,7 @@ export function TaskCounts() {
       label: t("status.todo"),
       value: data.tasks.filter((task) => task.status === "todo").length,
       icon: ScrollText,
-      tone: "bg-orange-50 text-orange-500",
+      tone: "bg-white text-slate-900 ring-1 ring-line",
     },
     {
       key: "doing",
@@ -28,7 +28,7 @@ export function TaskCounts() {
       label: t("status.done"),
       value: data.tasks.filter((task) => task.status === "done").length,
       icon: CircleCheck,
-      tone: "bg-green-50 text-green-600",
+      tone: "bg-slate-100 text-slate-500",
     },
   ];
 

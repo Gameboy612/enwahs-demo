@@ -48,7 +48,8 @@ export function TaskCard({
       role="button"
       tabIndex={0}
       className={cn(
-        "cursor-grab rounded-xl border border-line bg-white p-3 transition hover:border-brand-200 active:cursor-grabbing",
+        "cursor-grab rounded-xl border border-line p-3 transition hover:border-brand-200 active:cursor-grabbing",
+        task.status === "doing" ? "bg-amber-50/60" : "bg-white",
         done && "opacity-60",
       )}
     >

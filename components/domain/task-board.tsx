@@ -9,9 +9,9 @@ import type { Task, TaskStatus } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 const columnTone: Record<TaskStatus, string> = {
-  todo: "bg-orange-400",
+  todo: "bg-slate-800",
   doing: "bg-amber-400",
-  done: "bg-green-500",
+  done: "bg-slate-400",
 };
 
 export function TaskBoard({

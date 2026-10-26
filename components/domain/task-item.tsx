@@ -33,7 +33,12 @@ export function TaskItem({
 
   if (variant === "compact") {
     return (
-      <div className="flex items-center gap-2 rounded-lg border border-line/60 bg-white px-2 py-1.5">
+      <div
+        className={cn(
+          "flex items-center gap-2 rounded-lg border border-line/60 px-2 py-1.5",
+          task.status === "doing" ? "bg-amber-50/60" : "bg-white",
+        )}
+      >
         {href ? (
           <Link href={href} className="min-w-0 flex-1">
             <span
@@ -86,6 +91,7 @@ export function TaskItem({
       }}
       className={cn(
         "group flex cursor-pointer items-center gap-2.5 px-3.5 py-2.5 transition hover:bg-slate-50/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand-300/60 sm:gap-3",
+        task.status === "doing" && "bg-amber-50/60",
         done && "opacity-60",
       )}
     >

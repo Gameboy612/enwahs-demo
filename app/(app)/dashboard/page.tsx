@@ -40,9 +40,9 @@ export default function HomePage() {
 
   const tabs: { key: HomeFilter; label: string; icon: LucideIcon; tone: string }[] = [
     { key: "all", label: t("common.all"), icon: LayoutGrid, tone: "text-slate-400" },
-    { key: "todo", label: t("status.todo"), icon: ScrollText, tone: "text-orange-500" },
+    { key: "todo", label: t("status.todo"), icon: ScrollText, tone: "text-slate-900" },
     { key: "doing", label: t("status.doing"), icon: LoaderCircle, tone: "text-amber-500" },
-    { key: "done", label: t("status.done"), icon: CircleCheck, tone: "text-green-600" },
+    { key: "done", label: t("status.done"), icon: CircleCheck, tone: "text-slate-400" },
     { key: "urgent", label: t("tasks.urgent"), icon: TriangleAlert, tone: "text-red-500" },
     { key: "blocked", label: t("tasks.blocked"), icon: Pause, tone: "text-amber-500" },
   ];

@@ -80,18 +80,18 @@ export function TaskStateMenu({
       ? cn(
           "flex h-7 shrink-0 items-center justify-center gap-1 rounded-lg border px-1.5 text-[9px] font-medium transition sm:h-8 sm:w-[88px] sm:justify-between sm:gap-1.5 sm:px-2 sm:text-[10px]",
           task.status === "done"
-            ? "border-green-200 bg-green-50 text-green-600 hover:border-green-300"
+            ? "border-slate-200 bg-slate-50 text-slate-500 hover:border-slate-300"
             : task.status === "doing"
               ? "border-amber-200 bg-amber-50 text-amber-600 hover:border-amber-300"
-              : "border-orange-200 bg-orange-50 text-orange-600 hover:border-orange-300",
+              : "border-slate-200 bg-white text-slate-900 hover:border-slate-300",
         )
       : cn(
-          "flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition",
+          "flex h-5 w-5 shrink-0 items-center justify-center rounded-md border transition",
           task.status === "done"
-            ? "border-green-500 bg-green-500 text-white"
+            ? "border-slate-300 bg-slate-100 text-slate-500"
             : task.status === "doing"
-              ? "border-amber-300 bg-amber-50 text-amber-600"
-              : "border-orange-300 bg-orange-50 text-orange-500",
+              ? "border-amber-300 bg-amber-100 text-amber-700"
+              : "border-slate-300 bg-white text-slate-900",
         );
 
   return (
@@ -147,8 +147,8 @@ export function TaskStateMenu({
                       status === "doing"
                         ? "text-amber-500"
                         : status === "done"
-                          ? "text-green-600"
-                          : "text-orange-500",
+                          ? "text-slate-400"
+                          : "text-slate-700",
                     )}
                     aria-hidden="true"
                   />

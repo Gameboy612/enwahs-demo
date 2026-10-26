@@ -543,8 +543,8 @@ export function TaskModal({
                           option.value === "doing"
                             ? "text-amber-500"
                             : option.value === "done"
-                              ? "text-green-600"
-                              : "text-orange-500";
+                              ? "text-slate-400"
+                              : "text-slate-700";
                         return (
                           <button
                             key={option.value}

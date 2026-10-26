@@ -57,12 +57,6 @@ export function CompanyCard({ company }: { company: Company }) {
       </div>
 
       <div className="mt-3 border-t border-line/60 pt-2.5">
-        <div className="mb-1 flex items-center justify-between gap-2">
-          <span className="text-[9px] font-medium uppercase tracking-wide text-slate-400">
-            {t("companies.pendingTasks")}
-          </span>
-          <span className="text-[9px] tabular-nums text-slate-400">{open.length}</span>
-        </div>
         {open.length === 0 ? (
           <p className="py-2 text-[9px] text-slate-400">{t("companies.noPendingTasks")}</p>
         ) : (
@@ -91,7 +85,7 @@ export function CompanyCard({ company }: { company: Company }) {
         )}
       </div>
 
-      <div className="mt-3 flex items-center justify-between gap-3 border-t border-line/60 pt-3">
+      <div className="mt-auto flex items-center justify-between gap-3 border-t border-line/60 pt-3">
         <span className="text-[10px] text-slate-400">
           {open.length} {t("common.openTasks")}
         </span>
