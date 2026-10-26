@@ -109,18 +109,9 @@ export default function HomePage() {
 
   return (
     <div className="mx-auto w-full max-w-3xl space-y-5">
-      <div className="flex items-start justify-between gap-4">
-        <h1 className="text-2xl font-semibold tracking-tight text-ink">
-          {formatDate(DEMO_TODAY, "long")}
-        </h1>
-        <Button
-          onClick={createTask}
-          leftIcon={<Plus className="h-4 w-4" />}
-          className="shrink-0"
-        >
-          {t("tasks.add")}
-        </Button>
-      </div>
+      <h1 className="text-2xl font-semibold tracking-tight text-ink">
+        {formatDate(DEMO_TODAY, "long")}
+      </h1>
 
       <section>
         <div className="mb-2 flex items-center justify-end gap-2 px-1">
@@ -150,6 +141,12 @@ export default function HomePage() {
           </div>
         )}
       </section>
+
+      <div className="flex justify-end">
+        <Button onClick={createTask} leftIcon={<Plus className="h-4 w-4" />}>
+          {t("tasks.add")}
+        </Button>
+      </div>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div
