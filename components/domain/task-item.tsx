@@ -90,8 +90,10 @@ export function TaskItem({
         }
       }}
       className={cn(
-        "group flex cursor-pointer items-center gap-2.5 px-3.5 py-2.5 transition hover:bg-slate-50/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand-300/60 sm:gap-3",
-        task.status === "doing" && "bg-amber-50/60",
+        "group flex cursor-pointer items-center gap-2.5 px-3.5 py-2.5 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand-300/60 sm:gap-3",
+        task.status === "doing"
+          ? "bg-amber-50/60 hover:bg-amber-100/60"
+          : "hover:bg-slate-50/60",
         done && "opacity-60",
       )}
     >
